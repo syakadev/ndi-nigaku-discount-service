@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	dbprocess "template/service/auth/database/process"
-	reqmodel "template/service/auth/model/request"
-	resmodel "template/service/auth/model/response"
-	"template/service/auth/utils"
+	dbprocess "service/discount/api/database/process"
+	reqmodel "service/discount/api/model/request"
+	resmodel "service/discount/api/model/response"
+	"service/discount/api/utils"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

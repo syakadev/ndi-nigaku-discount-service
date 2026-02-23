@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	dbquery "template/service/auth/database/query"
-	reqmodel "template/service/auth/model/request"
-	resmodel "template/service/auth/model/response"
-	"template/service/auth/utils"
+	dbquery "service/discount/api/database/query"
+	reqmodel "service/discount/api/model/request"
+	resmodel "service/discount/api/model/response"
+	"service/discount/api/utils"
 )
 
 func ListPost(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {

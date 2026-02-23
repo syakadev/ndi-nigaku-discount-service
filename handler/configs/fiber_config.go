@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"template/service/auth/utils"
+	"service/discount/api/utils"
 	"time"
 
 	"github.com/go-playground/validator/v10"

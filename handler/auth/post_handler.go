@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"errors"
-	auth_ctrl "template/service/auth/controller/auth"
-	reqmodel "template/service/auth/model/request"
-	resmodel "template/service/auth/model/response"
-	"template/service/auth/utils"
+	auth_ctrl "service/discount/api/controller/auth"
+	reqmodel "service/discount/api/model/request"
+	resmodel "service/discount/api/model/response"
+	"service/discount/api/utils"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"

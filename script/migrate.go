@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"template/service/auth/database/migrate"
+	"service/discount/api/database/migrate"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

@@ -1,4 +1,4 @@
-module template/service/auth
+module service/discount/api
 
 go 1.23.0
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	servicemodel "template/service/auth/model/service"
+	servicemodel "service/discount/api/model/service"
 	"time"
 
 	"github.com/valyala/fasthttp"
