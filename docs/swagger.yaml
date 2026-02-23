@@ -1,0 +1,274 @@
+definitions:
+  reqmodel.CreatePost:
+    properties:
+      content:
+        type: string
+      is_active:
+        type: boolean
+      title:
+        type: string
+    required:
+    - content
+    - is_active
+    - title
+    type: object
+  reqmodel.UpdatePost:
+    properties:
+      content:
+        type: string
+      is_active:
+        type: boolean
+      title:
+        type: string
+    type: object
+  resmodel.DataResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  resmodel.DatasResponse:
+    properties:
+      datas:
+        items: {}
+        type: array
+      message:
+        type: string
+      pagination: {}
+      success:
+        type: boolean
+    type: object
+  resmodel.NoDataResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  utils.DataValidationError:
+    properties:
+      field:
+        example: email
+        type: string
+      message:
+        example: Invalid email address
+        type: string
+    type: object
+  utils.RequestError:
+    properties:
+      fields:
+        items:
+          $ref: '#/definitions/utils.DataValidationError'
+        type: array
+      message:
+        example: Invalid email address
+        type: string
+      status_code:
+        example: 422
+        type: integer
+    type: object
+info:
+  contact:
+    email: lifelinejar@mail.com
+    name: API Support
+  description: Template Service Auth Rest API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Template Service Auth
+  version: "1.0"
+paths:
+  /ndi/post:
+    get:
+      description: Mendapatkan seluruh post
+      parameters:
+      - description: Search keyword
+        in: query
+        name: search
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post berhasil diambil
+          schema:
+            $ref: '#/definitions/resmodel.DatasResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Post not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: List Post
+      tags:
+      - Post
+    post:
+      consumes:
+      - application/json
+      description: Membuat post baru
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Create post
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reqmodel.CreatePost'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Post Created
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Post
+      tags:
+      - Post
+  /ndi/post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Menghapus post
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Post Deleted
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Post
+      tags:
+      - Post
+    get:
+      description: Mendapatkan post berdasarkan ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post berhasil diambil
+          schema:
+            $ref: '#/definitions/resmodel.DataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Post not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Post By ID
+      tags:
+      - Post
+    put:
+      consumes:
+      - application/json
+      description: Membuat post baru
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update post
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reqmodel.UpdatePost'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Post Updated
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Post
+      tags:
+      - Post
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

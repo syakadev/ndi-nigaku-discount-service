@@ -1,0 +1,103 @@
+.PHONY: clean critic security lint test swag run stop
+
+BUILD_DIR = $(PWD)/build
+
+# App Env
+SERVER_NAME=""
+SERVER_URL=""
+SERVER_LOGS=""
+SERVER_LOGS_ENV=""
+SERVER_LOGS_APP=""
+SERVER_READ_TIMEOUT=
+CORS_WHITELISTS=""
+SECRET_KEY=""
+ENCRYPTION_KEY=""
+URL_RBAC=""
+DB_SERVER_AUTH=""
+MINIO_BASE_URL=
+MINIO_ACCESS_KEY=
+MINIO_SECRET_KEY=
+MINIO_BUCKET=
+MINIO_USE_SSL=
+
+
+clean:
+	rm -rf ./build
+
+critic:
+	gocritic check -enableAll ./...
+
+security:
+	gosec -quiet ./...
+
+lint:
+	golangci-lint run ./...
+
+test: clean critic security lint
+	go test -v -timeout 60s -coverprofile=cover.out -cover ./...
+	go tool cover -func=cover.out
+
+swag:
+	swag fmt && swag init
+
+go:
+	export SERVER_NAME=$(SERVER_NAME);\
+	export SERVER_URL=$(SERVER_URL);\
+	export SERVER_LOGS=$(SERVER_LOGS);\
+	export SERVER_LOGS_ENV=$(SERVER_LOGS_ENV);\
+    export SERVER_LOGS_APP=$(SERVER_LOGS_APP);\
+    export SERVER_READ_TIMEOUT=$(SERVER_READ_TIMEOUT);\
+    export CORS_WHITELISTS=$(CORS_WHITELISTS);\
+    export DB_SERVER_AUTH=$(DB_SERVER_AUTH);\
+    export SECRET_KEY=$(SECRET_KEY);\
+	export ENCRYPTION_KEY=$(ENCRYPTION_KEY);\
+	export URL_RBAC=$(URL_RBAC);\
+	export MINIO_BASE_URL=$(MINIO_BASE_URL);\
+	export MINIO_ACCESS_KEY=$(MINIO_ACCESS_KEY);\
+	export MINIO_SECRET_KEY=$(MINIO_SECRET_KEY);\
+	export MINIO_BUCKET=$(MINIO_BUCKET);\
+	export MINIO_USE_SSL=$(MINIO_USE_SSL);\
+    go mod tidy;\
+    go run main.go
+
+build: test
+	go mod tidy;\
+    #go build -o $(BUILD_DIR)/$(IMAGE_NAME) -tags musl
+	CGO_ENABLED=0 go build -ldflags="-w -s" -o $(BUILD_DIR)/$(IMAGE_NAME) main.go
+
+run: swag build
+	export SERVER_NAME=$(SERVER_NAME);\
+    export SERVER_URL=$(SERVER_URL);\
+    export SERVER_READ_TIMEOUT=$(SERVER_READ_TIMEOUT);\
+    export SECRET_KEY=$(SECRET_KEY);\
+    export CORS_WHITELISTS=$(CORS_WHITELISTS);\
+    export DB_SERVER_URL=$(DB_SERVER_URL);\
+	$(BUILD_DIR)/$(IMAGE_NAME)
+
+docker_build_image:
+	docker build -t $(IMAGE_NAME):latest .
+
+docker_app: docker_build_image
+	docker run -d \
+	            --restart unless-stopped \
+        		--name $(IMAGE_NAME)_container \
+        		--network host \
+        		-e SERVER_NAME=$(SERVER_NAME) \
+        		-e SERVER_URL=$(SERVER_URL) \
+        		-e SERVER_READ_TIMEOUT=$(SERVER_READ_TIMEOUT) \
+        		-e SECRET_KEY=$(SECRET_KEY) \
+        		-e CORS_WHITELISTS=$(CORS_WHITELISTS) \
+        		-e DB_SERVER_URL=$(DB_SERVER_URL) \
+        		$(IMAGE_NAME):latest
+
+docker_run: docker_app
+
+docker_stop:
+	docker container stop $(IMAGE_NAME)_container
+	docker container rm $(IMAGE_NAME)_container
+	docker rmi $(IMAGE_NAME):latest
+
+migrate :
+	export SERVER_NAME=$(SERVER_NAME);\
+	export DB_SERVER_AUTH=$(DB_SERVER_AUTH);\
+	go run script/migrate.go	
