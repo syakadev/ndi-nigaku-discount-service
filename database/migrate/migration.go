@@ -12,7 +12,8 @@ func GetMigrations() []Migration {
 		CreateDiscountTable(),
 		CreateDiscountTargetProductTable(),
 		CreateDiscountTargetTransactionTable(),
-		CreateAppliedDiscountTable(),
+		CreateProductDiscountAppliedTable(),
+		CreateTransactionDiscountAppliedTable(),
 	}
 }
 
@@ -45,9 +46,16 @@ func CreateDiscountTargetTransactionTable() Migration {
 	}
 }
 
-func CreateAppliedDiscountTable() Migration {
+func CreateProductDiscountAppliedTable() Migration {
 	return Migration{
-		Name: "create_applied_discount_table",
-		SQL:  CreateAppliedDiscountTableMigration(),
+		Name: "create_product_discount_applied_table",
+		SQL:  CreateProductDiscountAppliedTableMigration(),
+	}
+}
+
+func CreateTransactionDiscountAppliedTable() Migration {
+	return Migration{
+		Name: "create_transaction_discount_applied_table",
+		SQL:  CreateTransactionDiscountAppliedTableMigration(),
 	}
 }
