@@ -81,7 +81,10 @@ func CreateProductDiscountAppliedTableMigration() string{
 	return `
 		CREATE TABLE IF NOT EXISTS ndi_discount_product_application (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		discount_product_target_id UUID NOT NULL REFERENCES ndi_discount_product_target(id),
+		discount_product_target_id UUID,
+		customer_id,
+		customer_name,
+		transaction_date,
 
 		-- Audit Fields
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -96,7 +99,7 @@ func CreateTransactionDiscountAppliedTableMigration() string{
 	return `
 		CREATE TABLE IF NOT EXISTS ndi_discount_transaction_application (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-		discount_transaction_target_id UUID NOT NULL REFERENCES ndi_discount_transaction_target(id),
+		discount_transaction_target_id UUID NOT NULL,
 		target_id UUID, -- Biasanya merujuk pada Transaction ID
 		price_before_discount DECIMAL(15, 2),
 		total_discount DECIMAL(15, 2),
