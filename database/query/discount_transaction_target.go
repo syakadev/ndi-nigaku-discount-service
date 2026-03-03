@@ -3,10 +3,11 @@ package dbquery
 // ListDiscount retrieves a paginated list of discounts with optional search
 func ListDiscountTransactionTarget() string {
 	return `
-		SELECT 
+		SELECT
 			id,
 			discount_id,
 			max_total_quota,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
@@ -32,19 +33,20 @@ func CountListDiscountTransactionTarget() string {
 			public.ndi_discount_transaction_target
 		WHERE (
 			$1 = '' OR
-			max_total_quota ILIKE '%' || $1 || '%'
+			max_total_quota ILIKE '%' || $1 || '%' OR
+			discount_id::text = $1
 		) AND
 			deleted_at IS NULL;
 	`
 }
 
-// GetDiscountByID retrieves a single discount record
-func GetListDiscountTransactionTargetByDiscountID() string {
+func GetDiscountTransactionTargetByID() string {
 	return `
 		SELECT
 			id,
 			discount_id,
 			max_total_quota,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
@@ -52,9 +54,9 @@ func GetListDiscountTransactionTargetByDiscountID() string {
 		FROM
 			public.ndi_discount_transaction_target
 		WHERE
-			discount_id = $1 AND deleted_at IS NULL;
+			id = $1 AND deleted_at IS NULL;
 	`
-} 
+}
 
 // CreateDiscount inserts a new discount record
 func CreateDiscountTransactionTarget() string {
@@ -62,6 +64,7 @@ func CreateDiscountTransactionTarget() string {
 		INSERT INTO public.ndi_discount_transaction_target (
 			discount_id,
 			max_total_quota,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
@@ -69,23 +72,25 @@ func CreateDiscountTransactionTarget() string {
 		) VALUES (
 		    $1,  -- discount_id
 			$2,  -- max_total_quota
+			$3,  -- is_active
 			NOW(), -- created_at
-			$3,  -- created_by
+			$4,  -- created_by
 			NOW(), -- updated_at
-			$3   -- updated_by
+			$4   -- updated_by
 		);
 	`
 }
 
 // UpdateDiscount updates an existing discount record with COALESCE for optional fields
-func UpdateDiscountTransactionTargetQuota() string {
+func UpdateDiscountTransactionTarget() string {
 	return `
 		UPDATE
 			public.ndi_discount_transaction_target
 		SET
 			max_total_quota = $2,
+			is_active = $3,
 			updated_at = NOW(),
-			updated_by = $3
+			updated_by = $4
 		WHERE
 			id = $1
 		AND

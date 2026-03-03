@@ -1,13 +1,16 @@
 package dbquery
 
-// ListDiscount retrieves a paginated list of discounts with optional search
 func ListDiscountProductTarget() string {
 	return `
 		SELECT
 			id,
 			discount_id,
 			target_id,
+			product_name,
 			max_total_quota,
+			price_before_discount,
+			total_discount,
+			price_after_discount,
 			created_at,
 			created_by,
 			updated_at,
@@ -16,7 +19,14 @@ func ListDiscountProductTarget() string {
 			public.ndi_discount_transaction_target
 		WHERE (
 			$1 = '' OR
-			max_total_quota ILIKE '%' || $1 || '%'
+			discount_id::text = $1 OR
+			product_name ILIKE '%' || $1 || '%' OR
+			max_total_quota::text = $1 OR
+			price_before_discount::text = $1 OR
+			total_discount::text = $1 OR
+			price_after_discount::text = $1 OR
+			target_id::text = $1
+			is_active::text = $1
 		) AND
 			deleted_at IS NULL
 		ORDER BY created_at DESC
@@ -24,7 +34,6 @@ func ListDiscountProductTarget() string {
 	`
 }
 
-// CountListDiscount counts the total record for pagination
 func CountListDiscountProductTarget() string {
 	return `
 		SELECT
@@ -39,14 +48,39 @@ func CountListDiscountProductTarget() string {
 	`
 }
 
-// GetDiscountByID retrieves a single discount record
-func GetListDiscountProductTargetByDiscountID() string {
+func GetDiscountProductTargetByID() string {
 	return `
 		SELECT
 			id,
 			discount_id,
 			target_id,
+			product_name,
 			max_total_quota,
+			price_before_discount,
+			total_discount,
+			price_after_discount,
+			created_at,
+			created_by,
+			updated_at,
+			updated_by
+		FROM
+			public.ndi_discount_transaction_target
+		WHERE
+			id = $1 AND deleted_at IS NULL;
+	`
+}
+
+func GetDiscountProductTargetByDiscountID() string {
+	return `
+		SELECT
+			id,
+			discount_id,
+			target_id,
+			product_name,
+			max_total_quota,
+			price_before_discount,
+			total_discount,
+			price_after_discount,
 			created_at,
 			created_by,
 			updated_at,
@@ -56,32 +90,39 @@ func GetListDiscountProductTargetByDiscountID() string {
 		WHERE
 			discount_id = $1 AND deleted_at IS NULL;
 	`
-} 
+}
 
-// CreateDiscount inserts a new discount record
-func CreateDiscountPorductTarget() string {
+func CreateDiscountProductTarget() string {
 	return `
 		INSERT INTO public.ndi_discount_transaction_target (
 			discount_id,
 			target_id,
+			product_name
 			max_total_quota,
+			price_before_discount,
+			total_discount,
+			price_after_discount,
 			created_at,
 			created_by,
 			updated_at,
 			updated_by
 		) VALUES (
 		    $1,  -- discount_id
-			$2,  -- max_total_quota
-			$3,  -- target_id
+			$2,  -- target_id
+			$3,  -- product_name
+			$4,  -- max_total_quota
+			$5,  -- price_before_discount
+			$6,  -- total_discount
+			$7,  -- price_after_discount
 			NOW(), -- created_at
-			$4,  -- created_by
+			$8,  -- created_by
 			NOW(), -- updated_at
-			$5   -- updated_by
+			$8   -- updated_by
+
 		);
 	`
 }
 
-// UpdateDiscount updates an existing discount record with COALESCE for optional fields
 func UpdateDiscountProductTarget() string {
 	return `
 		UPDATE
@@ -98,7 +139,6 @@ func UpdateDiscountProductTarget() string {
 	`
 }
 
-// DeleteDiscount performs a soft delete
 func DeleteDiscountProductTarget() string {
 	return `
 		UPDATE
