@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	"os"
-	"strconv"
-	auth_ctrl "service/discount/api/controller/auth"
-	handlers "service/discount/api/handler/auth"
+	discount_ctrl "service/discount/api/controller/discount"
 	"service/discount/api/handler/configs"
+	handlers "service/discount/api/handler/discount"
 	"service/discount/api/handler/http_util"
 	_deliveryMiddleware "service/discount/api/handler/middleware"
 	"service/discount/api/utils"
+	"strconv"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -148,16 +148,23 @@ func main() {
 	})
 
 	// Swagger handler
-	app.Get("/dokumentasi/auth/swagger/*", swagger.HandlerDefault)
+	app.Get("/dokumentasi/discount/swagger/*", swagger.HandlerDefault)
 
 	// strict router
 	rStrict := app.Group("/ndi", middL.AuthMiddleware()) // router for api private access
 
+	// // Panggil Handler
+	// handlers.NewPostHandler(
+	// 	rStrict,
+	// 	vld,
+	// 	auth_ctrl.NewPostController(pgxConnAuthDb, timeoutContext, appLogger),
+	// )
+
 	// Panggil Handler
-	handlers.NewPostHandler(
+	handlers.NewDiscountProductTargetHandler(
 		rStrict,
 		vld,
-		auth_ctrl.NewPostController(pgxConnAuthDb, timeoutContext, appLogger),
+		discount_ctrl.NewDiscountProductTargetController(pgxConnAuthDb, timeoutContext, appLogger),
 	)
 
 	http_util.StartServerWithGracefulShutdown(app)
