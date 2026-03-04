@@ -11,12 +11,13 @@ func ListDiscountProductTarget() string {
 			price_before_discount,
 			total_discount,
 			price_after_discount,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
 			updated_by
 		FROM
-			public.ndi_discount_transaction_target
+			public.ndi_discount_product_target
 		WHERE (
 			$1 = '' OR
 			discount_id::text = $1 OR
@@ -25,7 +26,7 @@ func ListDiscountProductTarget() string {
 			price_before_discount::text = $1 OR
 			total_discount::text = $1 OR
 			price_after_discount::text = $1 OR
-			target_id::text = $1
+			target_id::text = $1 OR
 			is_active::text = $1
 		) AND
 			deleted_at IS NULL
@@ -39,10 +40,17 @@ func CountListDiscountProductTarget() string {
 		SELECT
 			COUNT(*)
 		FROM
-			public.ndi_discount_transaction_target
+			public.ndi_discount_product_target
 		WHERE (
 			$1 = '' OR
-			max_total_quota ILIKE '%' || $1 || '%'
+			discount_id::text = $1 OR
+			product_name ILIKE '%' || $1 || '%' OR
+			max_total_quota::text = $1 OR
+			price_before_discount::text = $1 OR
+			total_discount::text = $1 OR
+			price_after_discount::text = $1 OR
+			target_id::text = $1 OR
+			is_active::text = $1
 		) AND
 			deleted_at IS NULL;
 	`
@@ -59,12 +67,13 @@ func GetDiscountProductTargetByID() string {
 			price_before_discount,
 			total_discount,
 			price_after_discount,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
 			updated_by
 		FROM
-			public.ndi_discount_transaction_target
+			public.ndi_discount_product_target
 		WHERE
 			id = $1 AND deleted_at IS NULL;
 	`
@@ -81,12 +90,13 @@ func GetDiscountProductTargetByDiscountID() string {
 			price_before_discount,
 			total_discount,
 			price_after_discount,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
 			updated_by
 		FROM
-			public.ndi_discount_transaction_target
+			public.ndi_discount_product_target
 		WHERE
 			discount_id = $1 AND deleted_at IS NULL;
 	`
@@ -94,14 +104,15 @@ func GetDiscountProductTargetByDiscountID() string {
 
 func CreateDiscountProductTarget() string {
 	return `
-		INSERT INTO public.ndi_discount_transaction_target (
+		INSERT INTO public.ndi_discount_product_target (
 			discount_id,
 			target_id,
-			product_name
+			product_name,
 			max_total_quota,
 			price_before_discount,
 			total_discount,
 			price_after_discount,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
@@ -114,11 +125,11 @@ func CreateDiscountProductTarget() string {
 			$5,  -- price_before_discount
 			$6,  -- total_discount
 			$7,  -- price_after_discount
+			$8,  -- is_active
 			NOW(), -- created_at
-			$8,  -- created_by
+			$9,  -- created_by
 			NOW(), -- updated_at
-			$8   -- updated_by
-
+			$9   -- updated_by
 		);
 	`
 }
@@ -126,12 +137,18 @@ func CreateDiscountProductTarget() string {
 func UpdateDiscountProductTarget() string {
 	return `
 		UPDATE
-			public.ndi_discount_transaction_target
+			public.ndi_discount_product_target
 		SET
-			target_id = $2,
-			max_total_quota = $3,
+			discount_id = $2,
+			target_id = $3,
+			product_name = $4,
+			max_total_quota = $5,
+			price_before_discount = $6,
+			total_discount = $7,
+			price_after_discount = $8,
+			is_active = $9,
 			updated_at = NOW(),
-			updated_by = $4
+			updated_by = $10
 		WHERE
 			id = $1
 		AND
@@ -142,7 +159,7 @@ func UpdateDiscountProductTarget() string {
 func DeleteDiscountProductTarget() string {
 	return `
 		UPDATE
-			public.ndi_discount_transaction_target
+			public.ndi_discount_product_target
 		SET
 			deleted_at = NOW(),
 			deleted_by = $2

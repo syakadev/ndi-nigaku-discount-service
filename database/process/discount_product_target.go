@@ -10,6 +10,15 @@ import (
 )
 
 func ListDiscountProductTarget(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+	// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
+
 	// Query
 	query := dbquery.ListDiscountProductTarget()
 	offset := (request.Page - 1) * request.Size
@@ -26,7 +35,11 @@ func ListDiscountProductTarget(ctx context.Context, exec DBExecutor, request req
 			&discProductTarget.ID,
 			&discProductTarget.DiscountID,
 			&discProductTarget.TargetID,
+			&discProductTarget.ProductName,
 			&discProductTarget.MaxTotalQuota,
+			&discProductTarget.PriceBeforeDiscount,
+			&discProductTarget.TotalDiscount,
+			&discProductTarget.PriceAfterDiscount,
 			&discProductTarget.IsActive,
 			&discProductTarget.CreatedAt,
 			&discProductTarget.CreatedBy,
@@ -44,7 +57,7 @@ func ListDiscountProductTarget(ctx context.Context, exec DBExecutor, request req
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListDiscountProductTarget(), request.Search).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -58,6 +71,7 @@ func ListDiscountProductTarget(ctx context.Context, exec DBExecutor, request req
 }
 
 func GetDiscountProductTargetByID(ctx context.Context, exec DBExecutor, discProductTargetID string) (*resmodel.DiscountProductTarget, error) {
+
 	// Query
 	query := dbquery.GetDiscountProductTargetByID()
 	row := exec.QueryRow(ctx, query, discProductTargetID)
@@ -66,7 +80,11 @@ func GetDiscountProductTargetByID(ctx context.Context, exec DBExecutor, discProd
 		&discProductTarget.ID,
 		&discProductTarget.DiscountID,
 		&discProductTarget.TargetID,
+		&discProductTarget.ProductName,
 		&discProductTarget.MaxTotalQuota,
+		&discProductTarget.PriceBeforeDiscount,
+		&discProductTarget.TotalDiscount,
+		&discProductTarget.PriceAfterDiscount,
 		&discProductTarget.IsActive,
 		&discProductTarget.CreatedAt,
 		&discProductTarget.CreatedBy,
@@ -83,9 +101,12 @@ func CreateDiscountProductTarget(ctx context.Context, exec DBExecutor, request r
 	// Query
 	_, err := exec.Exec(ctx, dbquery.CreateDiscountProductTarget(),
 		request.DiscountID,
-		request.TargetType,
 		request.TargetID,
+		request.ProductName,
 		request.MaxTotalQuota,
+		request.PriceBeforeDiscount,
+		request.TotalDiscount,
+		request.PriceAfterDiscount,
 		request.IsActive,
 		request.AuthUserID,
 	)
@@ -102,9 +123,12 @@ func UpdateDiscountProductTarget(ctx context.Context, exec DBExecutor, request r
 	result, err := exec.Exec(ctx, dbquery.UpdateDiscountProductTarget(),
 		request.ID,
 		request.DiscountID,
-		request.TargetType,
 		request.TargetID,
+		request.ProductName,
 		request.MaxTotalQuota,
+		request.PriceBeforeDiscount,
+		request.TotalDiscount,
+		request.PriceAfterDiscount,
 		request.IsActive,
 		request.AuthUserID,
 	)
@@ -116,7 +140,7 @@ func UpdateDiscountProductTarget(ctx context.Context, exec DBExecutor, request r
 	if rowsAffected == 0 {
 		return utils.RequestError{
 			StatusCode: 404,
-			Message:    "Gagal melakukan perubahan, post tidak ditemukan",
+			Message:    "Gagal melakukan perubahan, diskon produk tidak ditemukan",
 		}
 	}
 
@@ -126,7 +150,7 @@ func UpdateDiscountProductTarget(ctx context.Context, exec DBExecutor, request r
 
 func DeleteDiscountProductTarget(ctx context.Context, exec DBExecutor, postID, authUserID string) error {
 	// Query
-	result, err := exec.Exec(ctx, dbquery.DeletePost(),
+	result, err := exec.Exec(ctx, dbquery.DeleteDiscountProductTarget(),
 		postID,
 		authUserID,
 	)
@@ -138,7 +162,7 @@ func DeleteDiscountProductTarget(ctx context.Context, exec DBExecutor, postID, a
 	if rowsAffected == 0 {
 		return utils.RequestError{
 			StatusCode: 404,
-			Message:    "Gagal melakukan penghapusan, post tidak ditemukan",
+			Message:    "Gagal melakukan penghapusan, diskon product tidak ditemukan",
 		}
 	}
 
