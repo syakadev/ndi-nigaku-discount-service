@@ -19,7 +19,7 @@ type PostController struct {
 	log            *utils.AppLogger
 }
 
-func NewPostController(
+func NewDiscountProductTargetController(
 	conn *pgxpool.Pool,
 	timeout time.Duration,
 	log *utils.AppLogger,
@@ -39,16 +39,16 @@ func (c *PostController) ListDiscountProductTarget(ctx context.Context, request 
 	// Get
 	productsTarget, pagination, err := dbprocess.ListDiscountProductTarget(reqCtx, c.pgxConn, request)
 	if err != nil {
-		c.log.Error("gagal memproses daftar post:", err)
+		c.log.Error("gagal memproses daftar diskon product:", err)
 		return nil, nil, utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal mengambil daftar post",
+			Message: "Gagal mengambil daftar diskon product",
 		}
 	}
 	if len(productsTarget) == 0 {
 		return nil, nil, utils.StandardError{
 			Code:    http.StatusNotFound,
-			Message: "Tidak ada data post yang tersedia",
+			Message: "Tidak ada data diskon product yang tersedia",
 		}
 	}
 
@@ -83,10 +83,10 @@ func (c *PostController) CreateDiscountProductTarget(ctx context.Context, reques
 	// Create
 	err := dbprocess.CreateDiscountProductTarget(reqCtx, c.pgxConn, request)
 	if err != nil {
-		c.log.Error("gagal memproses post:", err)
+		c.log.Error("gagal memproses diskon product:", err)
 		return utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal membuat post",
+			Message: "Gagal membuat diskon product",
 		}
 	}
 
@@ -102,10 +102,10 @@ func (c *PostController) UpdateDiscountProductTarget(ctx context.Context, reques
 	// Update
 	err := dbprocess.UpdateDiscountProductTarget(reqCtx, c.pgxConn, request)
 	if err != nil {
-		c.log.Error("gagal memproses post:", err)
+		c.log.Error("gagal memproses diskon produc:", err)
 		return utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal mengubah post",
+			Message: "Gagal mengubah diskon product",
 		}
 	}
 
@@ -113,18 +113,18 @@ func (c *PostController) UpdateDiscountProductTarget(ctx context.Context, reques
 	return nil
 }
 
-func (c *PostController) DeletePost(ctx context.Context, productID, authUserID string) error {
+func (c *PostController) DeleteDiscountProductTarget(ctx context.Context, productID, authUserID string) error {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
 
 	// Delete
-	err := dbprocess.DeletePost(reqCtx, c.pgxConn, productID, authUserID)
+	err := dbprocess.DeleteDiscountProductTarget(reqCtx, c.pgxConn, productID, authUserID)
 	if err != nil {
-		c.log.Error("gagal memproses post:", err)
+		c.log.Error("gagal memproses diskon product:", err)
 		return utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal menghapus post",
+			Message: "Gagal menghapus diskon product",
 		}
 	}
 
