@@ -26,8 +26,6 @@ func CreateDiscountTableMigration() string {
 		start_date TIMESTAMPTZ NOT NULL,
 		end_date TIMESTAMPTZ NOT NULL,
 		target VARCHAR(50), -- 'product' or 'transaction'
-
-		-- Audit Fields
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 		created_by UUID,
 		updated_at TIMESTAMPTZ,
@@ -38,7 +36,7 @@ func CreateDiscountTableMigration() string {
 	`
 }
 
-func CreateDiscountTargetProductTableMigration() string{
+func CreateDiscountTargetProductTableMigration() string {
 	return `
 		CREATE TABLE IF NOT EXISTS ndi_discount_product_target (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -50,67 +48,62 @@ func CreateDiscountTargetProductTableMigration() string{
 		total_discount DECIMAL(15, 2),
 		price_after_discount DECIMAL(15, 2),
 		is_active BOOLEAN DEFAULT TRUE,
-
-		-- Audit Fields
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 		created_by UUID,
 		updated_at TIMESTAMPTZ,
-		updated_by UUID
+		updated_by UUID,
+		deleted_at TIMESTAMPTZ,
+		deleted_by UUID
 	);
 	`
 }
 
-func CreateDiscountTargetTransactionTableMigration() string{
+func CreateDiscountTargetTransactionTableMigration() string {
 	return `
 		CREATE TABLE IF NOT EXISTS ndi_discount_transaction_target (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		discount_id UUID NOT NULL,
 		max_total_quota INTEGER,
 		is_active BOOLEAN DEFAULT TRUE,
-
-		-- Audit Fields
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 		created_by UUID,
 		updated_at TIMESTAMPTZ,
-		updated_by UUID
+		updated_by UUID,
+		deleted_at TIMESTAMPTZ,
+		deleted_by UUID
 	);
 	`
 }
 
-func CreateProductDiscountAppliedTableMigration() string{
+func CreateProductDiscountAppliedTableMigration() string {
 	return `
-		CREATE TABLE IF NOT EXISTS ndi_discount_product_application (
+		CREATE TABLE IF NOT EXISTS ndi_discount_product_applied (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		discount_product_target_id UUID,
-		customer_id,
-		customer_name,
-		transaction_date,
-
-		-- Audit Fields
+		customer_id UUID,
+		customer_name VARCHAR(255),
+		transaction_date TIMESTAMPTZ,
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 		created_by UUID,
-		updated_at TIMESTAMPTZ,
-		updated_by UUID
+		deleted_at TIMESTAMPTZ,
+		deleted_by UUID
 	);
 	`
 }
 
-func CreateTransactionDiscountAppliedTableMigration() string{
+func CreateTransactionDiscountAppliedTableMigration() string {
 	return `
-		CREATE TABLE IF NOT EXISTS ndi_discount_transaction_application (
+		CREATE TABLE IF NOT EXISTS ndi_discount_transaction_applied (
 		id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 		discount_transaction_target_id UUID NOT NULL,
 		target_id UUID, -- Biasanya merujuk pada Transaction ID
 		price_before_discount DECIMAL(15, 2),
 		total_discount DECIMAL(15, 2),
 		price_after_discount DECIMAL(15, 2),
-
-		-- Audit Fields
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 		created_by UUID,
-		updated_at TIMESTAMPTZ,
-		updated_by UUID
+		deleted_at TIMESTAMPTZ,
+		deleted_by UUID
 	);
 	`
 }
-

@@ -24,7 +24,6 @@ func CreatePgcryptoExtension() Migration {
 	}
 }
 
-
 func CreateDiscountTable() Migration {
 	return Migration{
 		Name: "create_discount_table",
