@@ -140,11 +140,11 @@ func (h *DiscountProductTargetHandler) GetDiscountProductTargetByID(c *fiber.Ctx
 //	@Tags			Discount Product Target
 //	@Produce		json
 //	@Accept			json
-//	@Param			X-Auth-User-Id	header		string								true	"User ID to check"
+//	@Param			X-Auth-User-Id	header		string									true	"User ID to check"
 //	@Param			request			body		reqmodel.CreateDiscountProductTarget	true	"Create discount product target"
-//	@Success		201				{object}	resmodel.NoDataResponse				"Discount product target created"
-//	@Failure		400				{object}	utils.RequestError					"Bad request"
-//	@Failure		500				{object}	utils.RequestError					"Server error"
+//	@Success		201				{object}	resmodel.NoDataResponse					"Discount product target created"
+//	@Failure		400				{object}	utils.RequestError						"Bad request"
+//	@Failure		500				{object}	utils.RequestError						"Server error"
 //	@Security		ApiKeyAuth
 //	@Router			/ndi/discount-product [post]
 func (h *DiscountProductTargetHandler) CreateDiscountProductTarget(c *fiber.Ctx) error {
@@ -205,12 +205,12 @@ func (h *DiscountProductTargetHandler) CreateDiscountProductTarget(c *fiber.Ctx)
 //	@Tags			Discount Product Target
 //	@Produce		json
 //	@Accept			json
-//	@Param			X-Auth-User-Id	header		string								true	"User ID to check"
-//	@Param			id				path		string								true	"Discount Product Target ID"
+//	@Param			X-Auth-User-Id	header		string									true	"User ID to check"
+//	@Param			id				path		string									true	"Discount Product Target ID"
 //	@Param			request			body		reqmodel.UpdateDiscountProductTarget	true	"Update discount product target"
-//	@Success		200				{object}	resmodel.NoDataResponse				"Discount product target updated"
-//	@Failure		400				{object}	utils.RequestError					"Bad request"
-//	@Failure		500				{object}	utils.RequestError					"Server error"
+//	@Success		200				{object}	resmodel.NoDataResponse					"Discount product target updated"
+//	@Failure		400				{object}	utils.RequestError						"Bad request"
+//	@Failure		500				{object}	utils.RequestError						"Server error"
 //	@Security		ApiKeyAuth
 //	@Router			/ndi/discount-product/{id} [put]
 func (h *DiscountProductTargetHandler) UpdateDiscountProductTarget(c *fiber.Ctx) error {
@@ -294,7 +294,7 @@ func (h *DiscountProductTargetHandler) DeleteDiscountProductTarget(c *fiber.Ctx)
 	productID := c.Params("id")
 
 	// Call Controller
-	err := h.Controller.DeletePost(c.Context(), productID, authUserID)
+	err := h.Controller.DeleteDiscountProductTarget(c.Context(), productID, authUserID)
 	if err != nil {
 		if reqErr, ok := err.(utils.RequestError); ok {
 			return c.Status(reqErr.StatusCode).JSON(reqErr)
