@@ -13,7 +13,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type PostController struct {
+type DiscountProductTargetController struct {
 	contextTimeout time.Duration
 	pgxConn        *pgxpool.Pool
 	log            *utils.AppLogger
@@ -23,15 +23,15 @@ func NewDiscountProductTargetController(
 	conn *pgxpool.Pool,
 	timeout time.Duration,
 	log *utils.AppLogger,
-) *PostController {
-	return &PostController{
+) *DiscountProductTargetController {
+	return &DiscountProductTargetController{
 		pgxConn:        conn,
 		contextTimeout: timeout,
 		log:            log,
 	}
 }
 
-func (c *PostController) ListDiscountProductTarget(ctx context.Context, request reqmodel.ListRequest) ([]interface{}, interface{}, error) {
+func (c *DiscountProductTargetController) ListDiscountProductTarget(ctx context.Context, request reqmodel.ListRequest) ([]interface{}, interface{}, error) {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
@@ -56,7 +56,7 @@ func (c *PostController) ListDiscountProductTarget(ctx context.Context, request 
 	return productsTarget, pagination, nil
 }
 
-func (c *PostController) GetDiscountProductTargetByID(ctx context.Context, productID string) (*resmodel.DiscountProductTarget, error) {
+func (c *DiscountProductTargetController) GetDiscountProductTargetByID(ctx context.Context, productID string) (*resmodel.DiscountProductTarget, error) {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
@@ -75,7 +75,7 @@ func (c *PostController) GetDiscountProductTargetByID(ctx context.Context, produ
 	return product, nil
 }
 
-func (c *PostController) CreateDiscountProductTarget(ctx context.Context, request reqmodel.CreateDiscountProductTarget) error {
+func (c *DiscountProductTargetController) CreateDiscountProductTarget(ctx context.Context, request reqmodel.CreateDiscountProductTarget) error {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
@@ -94,7 +94,7 @@ func (c *PostController) CreateDiscountProductTarget(ctx context.Context, reques
 	return nil
 }
 
-func (c *PostController) UpdateDiscountProductTarget(ctx context.Context, request reqmodel.UpdateDiscountProductTarget) error {
+func (c *DiscountProductTargetController) UpdateDiscountProductTarget(ctx context.Context, request reqmodel.UpdateDiscountProductTarget) error {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
@@ -113,7 +113,7 @@ func (c *PostController) UpdateDiscountProductTarget(ctx context.Context, reques
 	return nil
 }
 
-func (c *PostController) DeleteDiscountProductTarget(ctx context.Context, productID, authUserID string) error {
+func (c *DiscountProductTargetController) DeleteDiscountProductTarget(ctx context.Context, productID, authUserID string) error {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
