@@ -55,11 +55,11 @@ func ListTransactionFDiscountApplied(ctx context.Context, exec DBExecutor, reque
 	}
 	return transactionDiscountApplieds, pagination, nil
 }
-func ListTransactionDiscountAppliedByID(ctx context.Context, exec DBExecutor, transactionDiscountAppliedID string,request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+func ListTransactionDiscountAppliedByID(ctx context.Context, exec DBExecutor, transactionDiscountAppliedID string, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
 	// Query
 	query := dbquery.GetDiscountTransactionTargetByID()
 	offset := (request.Page - 1) * request.Size
-	rows, err := exec.Query(ctx, query,transactionDiscountAppliedID , request.Size, offset)
+	rows, err := exec.Query(ctx, query, transactionDiscountAppliedID, request.Size, offset)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -104,7 +104,6 @@ func ListTransactionDiscountAppliedByID(ctx context.Context, exec DBExecutor, tr
 	return transactionDiscountApplieds, pagination, nil
 }
 
-
 func CreateTransactionDiscountApplied(ctx context.Context, exec DBExecutor, request reqmodel.CreateTransactionDiscountApplied) error {
 	// Query
 	_, err := exec.Exec(ctx, dbquery.CreateTransactionDiscountApplied(),
@@ -122,7 +121,6 @@ func CreateTransactionDiscountApplied(ctx context.Context, exec DBExecutor, requ
 	// Return Success
 	return nil
 }
-
 
 func DeleteTransactionDiscountApplied(ctx context.Context, exec DBExecutor, postID, authUserID string) error {
 	// Query

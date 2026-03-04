@@ -58,7 +58,7 @@ func GetAppliedDiscountByDiscountTargetID() string {
 		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3;
 	`
-} 
+}
 
 // CreateDiscount inserts a new discount record
 func CreateProductDiscountApplied() string {
@@ -84,7 +84,6 @@ func CreateProductDiscountApplied() string {
 		);
 	`
 }
-
 
 // DeleteDiscount performs a soft delete
 func DeletProductDiscountApplied() string {

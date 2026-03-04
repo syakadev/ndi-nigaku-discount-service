@@ -1,4 +1,30 @@
 definitions:
+  reqmodel.CreateDiscountProductTarget:
+    properties:
+      discount_id:
+        type: string
+      is_active:
+        type: boolean
+      max_total_quota:
+        type: integer
+      price_after_discount:
+        type: number
+      price_before_discount:
+        type: number
+      product_name:
+        type: string
+      target_id:
+        type: string
+      target_type:
+        type: string
+      total_discount:
+        type: number
+    required:
+    - discount_id
+    - is_active
+    - target_id
+    - target_type
+    type: object
   reqmodel.CreatePost:
     properties:
       content:
@@ -11,6 +37,32 @@ definitions:
     - content
     - is_active
     - title
+    type: object
+  reqmodel.UpdateDiscountProductTarget:
+    properties:
+      discount_id:
+        type: string
+      is_active:
+        type: boolean
+      max_total_quota:
+        type: integer
+      price_after_discount:
+        type: number
+      price_before_discount:
+        type: number
+      product_name:
+        type: string
+      target_id:
+        type: string
+      target_type:
+        type: string
+      total_discount:
+        type: number
+    required:
+    - discount_id
+    - is_active
+    - target_id
+    - target_type
     type: object
   reqmodel.UpdatePost:
     properties:
@@ -81,6 +133,191 @@ info:
   title: Template Service Auth
   version: "1.0"
 paths:
+  /ndi/discount-product:
+    get:
+      description: Get all discount product targets
+      parameters:
+      - description: Search keyword
+        in: query
+        name: search
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Discount product targets retrieved successfully
+          schema:
+            $ref: '#/definitions/resmodel.DatasResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Discount product targets not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: List Discount Product Target
+      tags:
+      - Discount Product Target
+    post:
+      consumes:
+      - application/json
+      description: Create a new discount product target
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Create discount product target
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reqmodel.CreateDiscountProductTarget'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Discount product target created
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Discount Product Target
+      tags:
+      - Discount Product Target
+  /ndi/discount-product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a discount product target
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Discount Product Target ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Discount product target deleted
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Discount Product Target
+      tags:
+      - Discount Product Target
+    get:
+      description: Get a discount product target by its ID
+      parameters:
+      - description: Discount Product Target ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Discount product target retrieved successfully
+          schema:
+            $ref: '#/definitions/resmodel.DataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Discount product target not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Discount Product Target By ID
+      tags:
+      - Discount Product Target
+    put:
+      consumes:
+      - application/json
+      description: Update an existing discount product target
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Discount Product Target ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update discount product target
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reqmodel.UpdateDiscountProductTarget'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Discount product target updated
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Discount Product Target
+      tags:
+      - Discount Product Target
   /ndi/post:
     get:
       description: Mendapatkan seluruh post

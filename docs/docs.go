@@ -23,6 +23,294 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/ndi/discount-product": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all discount product targets",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Product Target"
+                ],
+                "summary": "List Discount Product Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount product targets retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DatasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Discount product targets not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new discount product target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Product Target"
+                ],
+                "summary": "Create Discount Product Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Create discount product target",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqmodel.CreateDiscountProductTarget"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Discount product target created",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/discount-product/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a discount product target by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Product Target"
+                ],
+                "summary": "Get Discount Product Target By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Discount Product Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount product target retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Discount product target not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update an existing discount product target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Product Target"
+                ],
+                "summary": "Update Discount Product Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Discount Product Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update discount product target",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqmodel.UpdateDiscountProductTarget"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount product target updated",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a discount product target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Product Target"
+                ],
+                "summary": "Delete Discount Product Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Discount Product Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount product target deleted",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
         "/ndi/post": {
             "get": {
                 "security": [
@@ -313,6 +601,44 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "reqmodel.CreateDiscountProductTarget": {
+            "type": "object",
+            "required": [
+                "discount_id",
+                "is_active",
+                "target_id",
+                "target_type"
+            ],
+            "properties": {
+                "discount_id": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "max_total_quota": {
+                    "type": "integer"
+                },
+                "price_after_discount": {
+                    "type": "number"
+                },
+                "price_before_discount": {
+                    "type": "number"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "target_type": {
+                    "type": "string"
+                },
+                "total_discount": {
+                    "type": "number"
+                }
+            }
+        },
         "reqmodel.CreatePost": {
             "type": "object",
             "required": [
@@ -329,6 +655,44 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "reqmodel.UpdateDiscountProductTarget": {
+            "type": "object",
+            "required": [
+                "discount_id",
+                "is_active",
+                "target_id",
+                "target_type"
+            ],
+            "properties": {
+                "discount_id": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "max_total_quota": {
+                    "type": "integer"
+                },
+                "price_after_discount": {
+                    "type": "number"
+                },
+                "price_before_discount": {
+                    "type": "number"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "target_type": {
+                    "type": "string"
+                },
+                "total_discount": {
+                    "type": "number"
                 }
             }
         },

@@ -65,7 +65,7 @@ func GetTransctionDiscountAppliedID() string {
 		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3;
 	`
-} 
+}
 
 // CreateDiscount inserts a new discount record
 func CreateTransactionDiscountApplied() string {
@@ -91,7 +91,6 @@ func CreateTransactionDiscountApplied() string {
 		);
 	`
 }
-
 
 // DeleteDiscount performs a soft delete
 func DeleteTransactionDiscountApplied() string {
