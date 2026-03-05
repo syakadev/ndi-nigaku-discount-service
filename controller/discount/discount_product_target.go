@@ -5,11 +5,13 @@ import (
 	"net/http"
 	"time"
 
+	"errors"
 	dbprocess "service/discount/api/database/process"
 	reqmodel "service/discount/api/model/request"
 	resmodel "service/discount/api/model/response"
 	"service/discount/api/utils"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -64,10 +66,16 @@ func (c *DiscountProductTargetController) GetDiscountProductTargetByID(ctx conte
 	// Get
 	product, err := dbprocess.GetDiscountProductTargetByID(reqCtx, c.pgxConn, productID)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, utils.StandardError{
+				Code:    http.StatusNotFound,
+				Message: "Diskon produk tidak ditemukan",
+			}
+		}
 		c.log.Error("gagal memproses product:", err)
 		return nil, utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal mengambil product",
+			Message: "Gagal mengambil data diskon produk",
 		}
 	}
 
@@ -102,10 +110,16 @@ func (c *DiscountProductTargetController) UpdateDiscountProductTarget(ctx contex
 	// Update
 	err := dbprocess.UpdateDiscountProductTarget(reqCtx, c.pgxConn, request)
 	if err != nil {
+		if reqErr, ok := err.(utils.RequestError); ok {
+			return utils.StandardError{
+				Code:    reqErr.StatusCode,
+				Message: reqErr.Message,
+			}
+		}
 		c.log.Error("gagal memproses diskon produc:", err)
 		return utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal mengubah diskon product",
+			Message: "Gagal mengubah data diskon produk",
 		}
 	}
 
@@ -121,10 +135,16 @@ func (c *DiscountProductTargetController) DeleteDiscountProductTarget(ctx contex
 	// Delete
 	err := dbprocess.DeleteDiscountProductTarget(reqCtx, c.pgxConn, productID, authUserID)
 	if err != nil {
+		if reqErr, ok := err.(utils.RequestError); ok {
+			return utils.StandardError{
+				Code:    reqErr.StatusCode,
+				Message: reqErr.Message,
+			}
+		}
 		c.log.Error("gagal memproses diskon product:", err)
 		return utils.StandardError{
 			Code:    http.StatusInternalServerError,
-			Message: "Gagal menghapus diskon product",
+			Message: "Gagal menghapus data diskon produk",
 		}
 	}
 
