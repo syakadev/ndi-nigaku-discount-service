@@ -160,7 +160,14 @@ func main() {
 	// 	auth_ctrl.NewPostController(pgxConnAuthDb, timeoutContext, appLogger),
 	// )
 
-	// Panggil Handler
+	// Panggil Handler discount
+	handlers.NewDiscountHandler(
+		rStrict,
+		vld,
+		discount_ctrl.NewDiscountController(pgxConnAuthDb, timeoutContext, appLogger),
+	)
+
+	// Panggil Handler discount product target
 	handlers.NewDiscountProductTargetHandler(
 		rStrict,
 		vld,
