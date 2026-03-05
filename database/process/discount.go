@@ -38,6 +38,7 @@ func ListDiscount(ctx context.Context, exec DBExecutor, request reqmodel.ListReq
 			&discount.Value,
 			&discount.StartDate,
 			&discount.EndDate,
+			&discount.IsActive,
 			&discount.CreatedAt,
 			&discount.CreatedBy,
 			&discount.UpdatedAt,
@@ -79,6 +80,7 @@ func GetDiscountByID(ctx context.Context, exec DBExecutor, discountID string) (*
 		&discount.Value,
 		&discount.StartDate,
 		&discount.EndDate,
+		&discount.IsActive,
 		&discount.CreatedAt,
 		&discount.CreatedBy,
 		&discount.UpdatedAt,
@@ -117,6 +119,7 @@ func UpdateDiscount(ctx context.Context, exec DBExecutor, request reqmodel.Updat
 		request.Value,
 		request.StartDate,
 		request.EndDate,
+		request.IsActive,
 		request.AuthUserID,
 	)
 	if err != nil {

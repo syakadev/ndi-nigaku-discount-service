@@ -10,6 +10,7 @@ func ListDiscount() string {
 			value,
 			start_date,
 			end_date,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
@@ -19,7 +20,11 @@ func ListDiscount() string {
 		WHERE (
 			$1 = '' OR 
 			name ILIKE '%' || $1 || '%' OR
-			type ILIKE '%' || $1 || '%'
+			type ILIKE '%' || $1 || '%' OR
+			value::text = $1 OR
+			start_date::text = $1 OR
+			end_date::text = $1 OR
+			is_active::text = $1
 		) AND
 			deleted_at IS NULL
 		LIMIT $2 OFFSET $3;
@@ -36,8 +41,12 @@ func CountListDiscount() string {
 		WHERE (
 			$1 = '' OR 
 			name ILIKE '%' || $1 || '%' OR
-			type ILIKE '%' || $1 || '%'
-		) AND 
+			type ILIKE '%' || $1 || '%' OR
+			value::text = $1 OR
+			start_date::text = $1 OR
+			end_date::text = $1 OR
+			is_active::text = $1
+		) AND
 			deleted_at IS NULL;
 	`
 }
@@ -52,6 +61,7 @@ func GetDiscountByID() string {
 			value,
 			start_date,
 			end_date,
+			is_active,
 			created_at,
 			created_by,
 			updated_at,
@@ -97,8 +107,9 @@ func UpdateDiscount() string {
 			value = $4,
 			start_date = $5,
 			end_date = $6,
+			is_active = $7,
 			updated_at = NOW(),
-			updated_by = $7
+			updated_by = $8
 		WHERE
 			id = $1 AND deleted_at IS NULL;
 	`
