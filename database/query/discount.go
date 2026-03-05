@@ -10,21 +10,18 @@ func ListDiscount() string {
 			value,
 			start_date,
 			end_date,
-			target,
-			total_quota,
 			created_at,
 			created_by,
 			updated_at,
 			updated_by
 		FROM 
-			discount
+			public.ndi_discount
 		WHERE (
 			$1 = '' OR 
 			name ILIKE '%' || $1 || '%' OR
-			target ILIKE '%' || $1 || '%'
+			type ILIKE '%' || $1 || '%'
 		) AND
 			deleted_at IS NULL
-		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3;
 	`
 }
@@ -35,11 +32,11 @@ func CountListDiscount() string {
 		SELECT 
 			COUNT(*)
 		FROM 
-			discount
+			public.ndi_discount
 		WHERE (
 			$1 = '' OR 
 			name ILIKE '%' || $1 || '%' OR
-			target ILIKE '%' || $1 || '%'
+			type ILIKE '%' || $1 || '%'
 		) AND 
 			deleted_at IS NULL;
 	`
@@ -55,14 +52,12 @@ func GetDiscountByID() string {
 			value,
 			start_date,
 			end_date,
-			target,
-			total_quota,
 			created_at,
 			created_by,
 			updated_at,
 			updated_by
-		FROM 
-			discount
+		FROM
+			public.ndi_discount
 		WHERE
 			id = $1 AND deleted_at IS NULL;
 	`
@@ -71,17 +66,13 @@ func GetDiscountByID() string {
 // CreateDiscount inserts a new discount record
 func CreateDiscount() string {
 	return `
-		INSERT INTO discount (
+		INSERT INTO public.ndi_discount (
 			name,
 			type,
 			value,
 			start_date,
 			end_date,
-			target,
-			total_quota,
-			created_at,
 			created_by,
-			updated_at,
 			updated_by
 		) VALUES (
 			$1,  -- name
@@ -89,13 +80,9 @@ func CreateDiscount() string {
 			$3,  -- value
 			$4,  -- start_date
 			$5,  -- end_date
-			$6,  -- target
-			$7,  -- total_quota
-			NOW(), -- created_at
-			$8,  -- created_by
-			NOW(), -- updated_at
-			$8   -- updated_by
-		) RETURNING id;
+			$6,  -- created_by
+			$6   -- updated_by
+		);
 	`
 }
 
@@ -103,17 +90,15 @@ func CreateDiscount() string {
 func UpdateDiscount() string {
 	return `
 		UPDATE
-			discount 
+			public.ndi_discount 
 		SET 
 			name = COALESCE(NULLIF($2, ''), name),
 			type = COALESCE(NULLIF($3, ''), type),
 			value = $4,
 			start_date = $5,
 			end_date = $6,
-			target = $7,
-			total_quota = $8,
 			updated_at = NOW(),
-			updated_by = $9
+			updated_by = $7
 		WHERE
 			id = $1 AND deleted_at IS NULL;
 	`
@@ -123,7 +108,7 @@ func UpdateDiscount() string {
 func DeleteDiscount() string {
 	return `
 		UPDATE
-			discount 
+			public.ndi_discount 
 		SET 
 			deleted_at = NOW(),
 			deleted_by = $2

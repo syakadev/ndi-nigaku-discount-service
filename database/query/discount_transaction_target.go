@@ -65,17 +65,13 @@ func CreateDiscountTransactionTarget() string {
 			discount_id,
 			max_total_quota,
 			is_active,
-			created_at,
 			created_by,
-			updated_at,
 			updated_by
 		) VALUES (
 		    $1,  -- discount_id
 			$2,  -- max_total_quota
 			$3,  -- is_active
-			NOW(), -- created_at
 			$4,  -- created_by
-			NOW(), -- updated_at
 			$4   -- updated_by
 		);
 	`
