@@ -174,6 +174,13 @@ func main() {
 		discount_ctrl.NewDiscountProductTargetController(pgxConnAuthDb, timeoutContext, appLogger),
 	)
 
+	// Panggil Handler discount transac target
+	handlers.NewDiscountTransactionTargetHandler(
+		rStrict,
+		vld,
+		discount_ctrl.NewDiscountTransactionTargetController(pgxConnAuthDb, timeoutContext, appLogger),
+	)
+
 	http_util.StartServerWithGracefulShutdown(app)
 }
 
