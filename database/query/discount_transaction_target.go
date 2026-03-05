@@ -16,7 +16,8 @@ func ListDiscountTransactionTarget() string {
 			public.ndi_discount_transaction_target
 		WHERE (
 			$1 = '' OR
-			max_total_quota ILIKE '%' || $1 || '%'
+			max_total_quota::text = $1 OR
+			discount_id::text = $1
 		) AND
 			deleted_at IS NULL
 		ORDER BY created_at DESC
@@ -33,7 +34,7 @@ func CountListDiscountTransactionTarget() string {
 			public.ndi_discount_transaction_target
 		WHERE (
 			$1 = '' OR
-			max_total_quota ILIKE '%' || $1 || '%' OR
+			max_total_quota::text = $1 OR
 			discount_id::text = $1
 		) AND
 			deleted_at IS NULL;

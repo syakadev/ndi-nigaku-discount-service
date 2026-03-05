@@ -10,6 +10,15 @@ import (
 )
 
 func ListDiscountTransactionTarget(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+	// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
+
 	// Query
 	query := dbquery.ListDiscountTransactionTarget()
 	offset := (request.Page - 1) * request.Size
@@ -43,7 +52,7 @@ func ListDiscountTransactionTarget(ctx context.Context, exec DBExecutor, request
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListDiscountTransactionTarget(), request.Search).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -119,7 +128,7 @@ func UpdateDiscountTransactionTarget(ctx context.Context, exec DBExecutor, reque
 
 func DeleteDiscountTransactionTarget(ctx context.Context, exec DBExecutor, postID, authUserID string) error {
 	// Query
-	result, err := exec.Exec(ctx, dbquery.DeletePost(),
+	result, err := exec.Exec(ctx, dbquery.DeleteDiscountTransactionTarget(),
 		postID,
 		authUserID,
 	)
