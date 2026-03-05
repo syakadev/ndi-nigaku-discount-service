@@ -10,6 +10,15 @@ import (
 )
 
 func ListDiscount(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+	// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
+
 	// Query
 	query := dbquery.ListDiscount()
 	offset := (request.Page - 1) * request.Size
@@ -29,8 +38,6 @@ func ListDiscount(ctx context.Context, exec DBExecutor, request reqmodel.ListReq
 			&discount.Value,
 			&discount.StartDate,
 			&discount.EndDate,
-			&discount.Target,
-			&discount.IsActive,
 			&discount.CreatedAt,
 			&discount.CreatedBy,
 			&discount.UpdatedAt,
@@ -47,7 +54,7 @@ func ListDiscount(ctx context.Context, exec DBExecutor, request reqmodel.ListReq
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListDiscount(), request.Search).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -62,7 +69,7 @@ func ListDiscount(ctx context.Context, exec DBExecutor, request reqmodel.ListReq
 
 func GetDiscountByID(ctx context.Context, exec DBExecutor, discountID string) (*resmodel.Discount, error) {
 	// Query
-	query := dbquery.GetPostByID()
+	query := dbquery.GetDiscountByID()
 	row := exec.QueryRow(ctx, query, discountID)
 	var discount resmodel.Discount
 	err := row.Scan(
@@ -72,8 +79,6 @@ func GetDiscountByID(ctx context.Context, exec DBExecutor, discountID string) (*
 		&discount.Value,
 		&discount.StartDate,
 		&discount.EndDate,
-		&discount.Target,
-		&discount.IsActive,
 		&discount.CreatedAt,
 		&discount.CreatedBy,
 		&discount.UpdatedAt,
@@ -87,14 +92,12 @@ func GetDiscountByID(ctx context.Context, exec DBExecutor, discountID string) (*
 
 func CreateDiscount(ctx context.Context, exec DBExecutor, request reqmodel.CreateDiscount) error {
 	// Query
-	_, err := exec.Exec(ctx, dbquery.CreatePost(),
+	_, err := exec.Exec(ctx, dbquery.CreateDiscount(),
 		request.Name,
 		request.Type,
 		request.Value,
 		request.StartDate,
 		request.EndDate,
-		request.Target,
-		request.IsActive,
 		request.AuthUserID,
 	)
 	if err != nil {
@@ -107,14 +110,13 @@ func CreateDiscount(ctx context.Context, exec DBExecutor, request reqmodel.Creat
 
 func UpdateDiscount(ctx context.Context, exec DBExecutor, request reqmodel.UpdateDiscount) error {
 	// Query
-	result, err := exec.Exec(ctx, dbquery.UpdatePost(),
+	result, err := exec.Exec(ctx, dbquery.UpdateDiscount(),
 		request.ID,
 		request.Name,
+		request.Type,
 		request.Value,
 		request.StartDate,
 		request.EndDate,
-		request.Target,
-		request.IsActive,
 		request.AuthUserID,
 	)
 	if err != nil {
@@ -125,7 +127,7 @@ func UpdateDiscount(ctx context.Context, exec DBExecutor, request reqmodel.Updat
 	if rowsAffected == 0 {
 		return utils.RequestError{
 			StatusCode: 404,
-			Message:    "Gagal melakukan perubahan, post tidak ditemukan",
+			Message:    "Gagal melakukan perubahan, diskon tidak ditemukan",
 		}
 	}
 
@@ -135,7 +137,7 @@ func UpdateDiscount(ctx context.Context, exec DBExecutor, request reqmodel.Updat
 
 func DeleteDiscount(ctx context.Context, exec DBExecutor, discountID, authUserID string) error {
 	// Query
-	result, err := exec.Exec(ctx, dbquery.DeletePost(),
+	result, err := exec.Exec(ctx, dbquery.DeleteDiscount(),
 		discountID,
 		authUserID,
 	)
