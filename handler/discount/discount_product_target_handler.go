@@ -12,14 +12,14 @@ import (
 )
 
 type DiscountProductTargetHandler struct {
-	Controller *discount_ctrl.PostController
+	Controller *discount_ctrl.DiscountProductTargetController
 	Validate   *validator.Validate
 }
 
 func NewDiscountProductTargetHandler(
 	r fiber.Router,
 	vld *validator.Validate,
-	controller *discount_ctrl.PostController,
+	controller *discount_ctrl.DiscountProductTargetController,
 ) {
 	handler := &DiscountProductTargetHandler{
 		Controller: controller,
