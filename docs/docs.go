@@ -893,10 +893,8 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "end_date",
-                "is_active",
                 "name",
                 "start_date",
-                "target",
                 "type",
                 "value"
             ],
@@ -904,16 +902,10 @@ const docTemplate = `{
                 "end_date": {
                     "type": "string"
                 },
-                "is_active": {
-                    "type": "boolean"
-                },
                 "name": {
                     "type": "string"
                 },
                 "start_date": {
-                    "type": "string"
-                },
-                "target": {
                     "type": "string"
                 },
                 "type": {
@@ -990,9 +982,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "start_date": {
-                    "type": "string"
-                },
-                "target": {
                     "type": "string"
                 },
                 "type": {
