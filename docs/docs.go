@@ -430,6 +430,294 @@ const docTemplate = `{
                 }
             }
         },
+        "/ndi/discount-transaction": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all discount transaction targets",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Transaction Target"
+                ],
+                "summary": "List Discount Transaction Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount transaction targets retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DatasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Discount transaction targets not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new discount transaction target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Transaction Target"
+                ],
+                "summary": "Create Discount Transaction Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Create discount transaction target",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqmodel.CreateDiscountTransactionTarget"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Discount transaction target created",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/discount-transaction/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a discount transaction target by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Transaction Target"
+                ],
+                "summary": "Get Discount Transaction Target By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Discount Transaction Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount transaction target retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Discount transaction target not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update an existing discount transaction target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Transaction Target"
+                ],
+                "summary": "Update Discount Transaction Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Discount Transaction Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update discount transaction target",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqmodel.UpdateDiscountTransactionTarget"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount transaction target updated",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a discount transaction target",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Discount Transaction Target"
+                ],
+                "summary": "Delete Discount Transaction Target",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Discount Transaction Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount transaction target deleted",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
         "/ndi/discount/{id}": {
             "get": {
                 "security": [
@@ -950,6 +1238,25 @@ const docTemplate = `{
                 }
             }
         },
+        "reqmodel.CreateDiscountTransactionTarget": {
+            "type": "object",
+            "required": [
+                "discount_id",
+                "is_active",
+                "max_total_quota"
+            ],
+            "properties": {
+                "discount_id": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "max_total_quota": {
+                    "type": "integer"
+                }
+            }
+        },
         "reqmodel.CreatePost": {
             "type": "object",
             "required": [
@@ -1023,6 +1330,20 @@ const docTemplate = `{
                 },
                 "total_discount": {
                     "type": "number"
+                }
+            }
+        },
+        "reqmodel.UpdateDiscountTransactionTarget": {
+            "type": "object",
+            "properties": {
+                "discount_id": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "max_total_quota": {
+                    "type": "integer"
                 }
             }
         },
