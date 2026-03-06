@@ -9,7 +9,16 @@ import (
 	"service/discount/api/utils"
 )
 
-func ListTransactionFDiscountApplied(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+func ListTransactionDiscountApplied(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+	// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
+
 	// Query
 	query := dbquery.ListTransactionDiscountApplied()
 	offset := (request.Page - 1) * request.Size
@@ -25,12 +34,12 @@ func ListTransactionFDiscountApplied(ctx context.Context, exec DBExecutor, reque
 		err := rows.Scan(
 			&transactionDiscountApplied.ID,
 			&transactionDiscountApplied.DiscountTransactionTargetID,
-			&transactionDiscountApplied.TargetID,
-
+			&transactionDiscountApplied.TargetID, // transaksi id target
+			&transactionDiscountApplied.PriceBeforeDiscount,
+			&transactionDiscountApplied.TotalDiscount,
+			&transactionDiscountApplied.PriceAfterDiscount,
 			&transactionDiscountApplied.CreatedAt,
 			&transactionDiscountApplied.CreatedBy,
-			&transactionDiscountApplied.UpdatedAt,
-			&transactionDiscountApplied.UpdatedBy,
 		)
 		if err != nil {
 			return nil, nil, err
@@ -43,7 +52,7 @@ func ListTransactionFDiscountApplied(ctx context.Context, exec DBExecutor, reque
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListTransactionDiscountApplied(), request.Search).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,11 +64,19 @@ func ListTransactionFDiscountApplied(ctx context.Context, exec DBExecutor, reque
 	}
 	return transactionDiscountApplieds, pagination, nil
 }
-func ListTransactionDiscountAppliedByID(ctx context.Context, exec DBExecutor, transactionDiscountAppliedID string, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+func ListTransactionDiscountAppliedByDiscountID(ctx context.Context, exec DBExecutor, transactionDiscountTargetID string, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+	// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
 	// Query
-	query := dbquery.GetDiscountTransactionTargetByID()
+	query := dbquery.GetListTransctionDiscountAppliedByDiscountID()
 	offset := (request.Page - 1) * request.Size
-	rows, err := exec.Query(ctx, query, transactionDiscountAppliedID, request.Size, offset)
+	rows, err := exec.Query(ctx, query, transactionDiscountTargetID, request.Size, offset)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -71,14 +88,12 @@ func ListTransactionDiscountAppliedByID(ctx context.Context, exec DBExecutor, tr
 		err := rows.Scan(
 			&transactionDiscountApplid.ID,
 			&transactionDiscountApplid.DiscountTransactionTargetID,
-			&transactionDiscountApplid.TargetID,
+			&transactionDiscountApplid.TargetID, // transaksi id target
 			&transactionDiscountApplid.PriceBeforeDiscount,
 			&transactionDiscountApplid.TotalDiscount,
 			&transactionDiscountApplid.PriceAfterDiscount,
 			&transactionDiscountApplid.CreatedAt,
 			&transactionDiscountApplid.CreatedBy,
-			&transactionDiscountApplid.UpdatedAt,
-			&transactionDiscountApplid.UpdatedBy,
 		)
 		if err != nil {
 			return nil, nil, err
@@ -91,7 +106,7 @@ func ListTransactionDiscountAppliedByID(ctx context.Context, exec DBExecutor, tr
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListTransactionDiscountAppliedByDiscountID(), transactionDiscountTargetID).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -108,7 +123,7 @@ func CreateTransactionDiscountApplied(ctx context.Context, exec DBExecutor, requ
 	// Query
 	_, err := exec.Exec(ctx, dbquery.CreateTransactionDiscountApplied(),
 		request.DiscountTransactionTargetID,
-		request.TargetID,
+		request.TargetID, // transaksi id target
 		request.PriceBeforeDiscount,
 		request.TotalDiscount,
 		request.PriceAfterDiscount,
@@ -122,10 +137,10 @@ func CreateTransactionDiscountApplied(ctx context.Context, exec DBExecutor, requ
 	return nil
 }
 
-func DeleteTransactionDiscountApplied(ctx context.Context, exec DBExecutor, postID, authUserID string) error {
+func DeleteTransactionDiscountApplied(ctx context.Context, exec DBExecutor, transactionDiscountAppliedID, authUserID string) error {
 	// Query
-	result, err := exec.Exec(ctx, dbquery.DeletePost(),
-		postID,
+	result, err := exec.Exec(ctx, dbquery.DeleteTransactionDiscountApplied(),
+		transactionDiscountAppliedID,
 		authUserID,
 	)
 	if err != nil {
@@ -136,7 +151,7 @@ func DeleteTransactionDiscountApplied(ctx context.Context, exec DBExecutor, post
 	if rowsAffected == 0 {
 		return utils.RequestError{
 			StatusCode: 404,
-			Message:    "Gagal melakukan penghapusan, data product appplied tidak ditemukan",
+			Message:    "Gagal melakukan penghapusan, data diskon transaksi yang diterapkan tidak ditemukan",
 		}
 	}
 
