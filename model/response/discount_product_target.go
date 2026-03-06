@@ -23,9 +23,8 @@ type ProductDiscountApplied struct {
 	ProductDiscountID string     `json:"product_discount_id"`
 	CustomerID        string     `json:"customer_id"`
 	CustomerName      string     `json:"customer_name"`
+	TransactionDate   time.Time  `json:"transaction_date"`
 	IsActive          bool       `json:"is_active"`
 	CreatedAt         time.Time  `json:"created_at"`
 	CreatedBy         string     `json:"created_by"`
-	UpdatedAt         *time.Time `json:"updated_at"`
-	UpdatedBy         *string    `json:"updated_by"`
 }
