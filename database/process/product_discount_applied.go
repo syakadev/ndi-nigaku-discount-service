@@ -64,7 +64,7 @@ func ListProductDiscountApplied(ctx context.Context, exec DBExecutor, request re
 	return appliedDiscounts, pagination, nil
 }
 func ListProductDiscountAppliedByProductDiscountID(ctx context.Context, exec DBExecutor, productDiscountAppliedID string, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
-		// default value page and size
+	// default value page and size
 	if request.Page <= 0 {
 		request.Page = 1
 	}
@@ -135,10 +135,10 @@ func CreateProductDiscountApplied(ctx context.Context, exec DBExecutor, request 
 	return nil
 }
 
-func DeleteProductDiscountApplied(ctx context.Context, exec DBExecutor, postID, authUserID string) error {
+func DeleteProductDiscountApplied(ctx context.Context, exec DBExecutor, productDiscountAppliedID, authUserID string) error {
 	// Query
 	result, err := exec.Exec(ctx, dbquery.DeleteProductDiscountApplied(),
-		postID,
+		productDiscountAppliedID,
 		authUserID,
 	)
 	if err != nil {
