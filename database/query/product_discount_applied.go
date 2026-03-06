@@ -5,18 +5,20 @@ func ListProductDiscountApplied() string {
 	return `
 		SELECT
 			id,
-			discount_target_id,
+			discount_product_target_id,
+			customer_id,
+			customer_name,
+			transaction_date,
 			created_at,
-			created_by,
-			updated_at,
-			updated_by
+			created_by
 		FROM
-			public.ndi_applied_discount
+			public.ndi_discount_product_applied
 		WHERE (
 			$1 = '' OR
-			price_before_discount ILIKE '%' || $1 || '%' OR
-			total_discount ILIKE '%' || $1 || '%' OR
-			price_after_discount ILIKE '%' || $1 || '%'
+			discount_product_target_id::text = $1 OR
+			customer_id::text = $1 OR
+			customer_name ILIKE '%' || $1 || '%' OR
+			transaction_date::text = $1
 		) AND
 			deleted_at IS NULL
 		ORDER BY created_at DESC
@@ -25,71 +27,80 @@ func ListProductDiscountApplied() string {
 }
 
 // CountListDiscount counts the total record for pagination
-func CountListAppliedDiscount() string {
+func CountListProductDiscountAppliedDiscount() string {
 	return `
 		SELECT
 			COUNT(*)
 		FROM
-			public.ndi_applied_discount
+			public.ndi_discount_product_applied
 		WHERE (
 			$1 = '' OR
-			price_before_discount ILIKE '%' || $1 || '%' OR
-			total_discount ILIKE '%' || $1 || '%' OR
-			price_after_discount ILIKE '%' || $1 || '%'
+			discount_product_target_id::text = $1 OR
+			customer_id::text = $1 OR
+			customer_name ILIKE '%' || $1 || '%' OR
+			transaction_date::text = $1
 		) AND
 			deleted_at IS NULL;
 	`
 }
 
 // GetDiscountByID retrieves a single discount record
-func GetAppliedDiscountByDiscountTargetID() string {
+func GetListProductDiscountAppliedByProductDiscountID() string {
 	return `
 		SELECT
 			id,
-			discount_target_id,
+			discount_product_target_id,
+			customer_id,
+			customer_name,
+			transaction_date,
 			created_at,
-			created_by,
-			updated_at,
-			updated_by
+			created_by
 		FROM
-			public.ndi_applied_discount
+			public.ndi_discount_product_applied
 		WHERE
-			discount_id = $1 AND deleted_at IS NULL;
+			discount_product_target_id = $1 AND deleted_at IS NULL
 		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3;
 	`
 }
 
+// CountListProductDiscountAppliedByProductDiscountID counts the total record for pagination
+func CountListProductDiscountAppliedByProductDiscountID() string {
+	return `
+		SELECT
+			COUNT(*)
+		FROM
+			public.ndi_discount_product_applied
+		WHERE
+			discount_product_target_id = $1
+		AND
+			deleted_at IS NULL;
+	`
+}
 // CreateDiscount inserts a new discount record
 func CreateProductDiscountApplied() string {
 	return `
-		INSERT INTO public.ndi_applied_discount (
-			discount_target_id,
-			price_before_discount,
-			total_discount,
-			price_after_discount,
-			created_at,
-			created_by,
-			updated_at,
-			updated_by
+		INSERT INTO public.ndi_discount_product_applied (
+			discount_product_target_id,
+			customer_id,
+			customer_name,
+			transaction_date,
+			created_by
 		) VALUES (
-		    $1,  -- discount_target_id
+		    $1,  -- discount_product_target_id
 			$2,  -- price_before_discount
 			$3,  -- total_discount
 			$4,  -- price_after_discount
-			NOW(), -- created_at
-			$5,  -- created_by
-			NOW(), -- updated_at
-			$6   -- updated_by
+			$5   -- created_by
 		);
 	`
 }
 
 // DeleteDiscount performs a soft delete
-func DeletProductDiscountApplied() string {
+func DeleteProductDiscountApplied() string {
 	return `
 		UPDATE
-			public.ndi_applied_discount
+			public.ndi_discount_product_applied
 		SET
 			deleted_at = NOW(),
 			deleted_by = $2
