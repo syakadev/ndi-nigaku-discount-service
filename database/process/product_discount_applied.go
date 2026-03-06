@@ -10,6 +10,15 @@ import (
 )
 
 func ListProductDiscountApplied(ctx context.Context, exec DBExecutor, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+	// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
+
 	// Query
 	query := dbquery.ListProductDiscountApplied()
 	offset := (request.Page - 1) * request.Size
@@ -27,10 +36,9 @@ func ListProductDiscountApplied(ctx context.Context, exec DBExecutor, request re
 			&appliedDiscount.ProductDiscountID,
 			&appliedDiscount.CustomerID,
 			&appliedDiscount.CustomerName,
+			&appliedDiscount.TransactionDate,
 			&appliedDiscount.CreatedAt,
 			&appliedDiscount.CreatedBy,
-			&appliedDiscount.UpdatedAt,
-			&appliedDiscount.UpdatedBy,
 		)
 		if err != nil {
 			return nil, nil, err
@@ -43,7 +51,7 @@ func ListProductDiscountApplied(ctx context.Context, exec DBExecutor, request re
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListProductDiscountAppliedDiscount(), request.Search).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,9 +63,18 @@ func ListProductDiscountApplied(ctx context.Context, exec DBExecutor, request re
 	}
 	return appliedDiscounts, pagination, nil
 }
-func ListProductDiscountAppliedByID(ctx context.Context, exec DBExecutor, productDiscountAppliedID string, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+func ListProductDiscountAppliedByProductDiscountID(ctx context.Context, exec DBExecutor, productDiscountAppliedID string, request reqmodel.ListRequest) ([]interface{}, *resmodel.PaginationData, error) {
+		// default value page and size
+	if request.Page <= 0 {
+		request.Page = 1
+	}
+
+	if request.Size <= 0 {
+		request.Size = 10
+	}
+
 	// Query
-	query := dbquery.GetDiscountProductTargetByID()
+	query := dbquery.GetListProductDiscountAppliedByProductDiscountID()
 	offset := (request.Page - 1) * request.Size
 	rows, err := exec.Query(ctx, query, productDiscountAppliedID, request.Size, offset)
 	if err != nil {
@@ -73,10 +90,9 @@ func ListProductDiscountAppliedByID(ctx context.Context, exec DBExecutor, produc
 			&productDiscountApplid.ProductDiscountID,
 			&productDiscountApplid.CustomerID,
 			&productDiscountApplid.CustomerName,
+			&productDiscountApplid.TransactionDate,
 			&productDiscountApplid.CreatedAt,
 			&productDiscountApplid.CreatedBy,
-			&productDiscountApplid.UpdatedAt,
-			&productDiscountApplid.UpdatedBy,
 		)
 		if err != nil {
 			return nil, nil, err
@@ -89,7 +105,7 @@ func ListProductDiscountAppliedByID(ctx context.Context, exec DBExecutor, produc
 
 	// Query Total Data
 	var total int
-	err = exec.QueryRow(ctx, dbquery.CountListPost(), request.Search).Scan(&total)
+	err = exec.QueryRow(ctx, dbquery.CountListProductDiscountAppliedByProductDiscountID(), productDiscountAppliedID).Scan(&total)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -108,6 +124,7 @@ func CreateProductDiscountApplied(ctx context.Context, exec DBExecutor, request 
 		request.DiscountProductTargetID,
 		request.CustomerID,
 		request.CustomerName,
+		request.TransactionDate,
 		request.AuthUserID,
 	)
 	if err != nil {
@@ -120,7 +137,7 @@ func CreateProductDiscountApplied(ctx context.Context, exec DBExecutor, request 
 
 func DeleteProductDiscountApplied(ctx context.Context, exec DBExecutor, postID, authUserID string) error {
 	// Query
-	result, err := exec.Exec(ctx, dbquery.DeletePost(),
+	result, err := exec.Exec(ctx, dbquery.DeleteProductDiscountApplied(),
 		postID,
 		authUserID,
 	)
