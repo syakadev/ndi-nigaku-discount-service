@@ -19,12 +19,12 @@ type DiscountProductTarget struct {
 }
 
 type ProductDiscountApplied struct {
-	ID                string     `json:"id"` // UUID
-	ProductDiscountID string     `json:"product_discount_id"`
-	CustomerID        string     `json:"customer_id"`
-	CustomerName      string     `json:"customer_name"`
-	TransactionDate   time.Time  `json:"transaction_date"`
-	IsActive          bool       `json:"is_active"`
-	CreatedAt         time.Time  `json:"created_at"`
-	CreatedBy         string     `json:"created_by"`
+	ID                string    `json:"id"` // UUID
+	ProductDiscountID string    `json:"product_discount_id"`
+	CustomerID        string    `json:"customer_id"`
+	CustomerName      string    `json:"customer_name"`
+	TransactionDate   time.Time `json:"transaction_date"`
+	IsActive          bool      `json:"is_active"`
+	CreatedAt         time.Time `json:"created_at"`
+	CreatedBy         string    `json:"created_by"`
 }
