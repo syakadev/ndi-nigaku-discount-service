@@ -1166,6 +1166,460 @@
                     }
                 }
             }
+        },
+        "/ndi/product-discount-applied": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all product discount applied",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product Discount Applied"
+                ],
+                "summary": "List Product Discount Applied",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product discount applied retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DatasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Product discount applied not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new product discount applied",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product Discount Applied"
+                ],
+                "summary": "Create Product Discount Applied",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Create product discount applied",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqmodel.CreateProductDiscountApplied"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Product discount applied created",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/product-discount-applied/by-discount/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of product discount applied by its discount ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product Discount Applied"
+                ],
+                "summary": "List Product Discount Applied By Discount ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Product Discount ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product discount applied retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DatasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Product discount applied not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/product-discount-applied/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a product discount applied",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product Discount Applied"
+                ],
+                "summary": "Delete Product Discount Applied",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Product Discount Applied ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product discount applied deleted",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/transaction-discount-applied": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all transaction discount applied",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction Discount Applied"
+                ],
+                "summary": "List Transaction Discount Applied",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product discount applied retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DatasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Product discount applied not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new transaction discount applied",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction Discount Applied"
+                ],
+                "summary": "Create Transaction Discount Applied",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Create transaction discount applied",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reqmodel.CreateTransactionDiscountApplied"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Transaction discount applied created",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/transaction-discount-applied/by-target/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of transaction discount applied by its discount target ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction Discount Applied"
+                ],
+                "summary": "List Transaction Discount Applied By Discount Target ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Transaction Discount Target ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction discount applied retrieved successfully",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.DatasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Transaction discount applied not found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/ndi/transaction-discount-applied/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete a transaction discount applied",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transaction Discount Applied"
+                ],
+                "summary": "Delete Transaction Discount Applied",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID to check",
+                        "name": "X-Auth-User-Id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Transaction Discount Applied ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction discount applied deleted",
+                        "schema": {
+                            "$ref": "#/definitions/resmodel.NoDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.RequestError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1265,6 +1719,53 @@
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "reqmodel.CreateProductDiscountApplied": {
+            "type": "object",
+            "required": [
+                "discount_product_target_id"
+            ],
+            "properties": {
+                "customer_id": {
+                    "type": "string"
+                },
+                "customer_name": {
+                    "type": "string"
+                },
+                "discount_product_target_id": {
+                    "type": "string"
+                },
+                "transaction_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "reqmodel.CreateTransactionDiscountApplied": {
+            "type": "object",
+            "required": [
+                "discount_transaction_target_id",
+                "price_after_discount",
+                "price_before_discount",
+                "target_id",
+                "total_discount"
+            ],
+            "properties": {
+                "discount_transaction_target_id": {
+                    "type": "string"
+                },
+                "price_after_discount": {
+                    "type": "number"
+                },
+                "price_before_discount": {
+                    "type": "number"
+                },
+                "target_id": {
+                    "type": "string"
+                },
+                "total_discount": {
+                    "type": "number"
                 }
             }
         },

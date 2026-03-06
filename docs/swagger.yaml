@@ -67,6 +67,38 @@ definitions:
     - is_active
     - title
     type: object
+  reqmodel.CreateProductDiscountApplied:
+    properties:
+      customer_id:
+        type: string
+      customer_name:
+        type: string
+      discount_product_target_id:
+        type: string
+      transaction_date:
+        type: string
+    required:
+    - discount_product_target_id
+    type: object
+  reqmodel.CreateTransactionDiscountApplied:
+    properties:
+      discount_transaction_target_id:
+        type: string
+      price_after_discount:
+        type: number
+      price_before_discount:
+        type: number
+      target_id:
+        type: string
+      total_discount:
+        type: number
+    required:
+    - discount_transaction_target_id
+    - price_after_discount
+    - price_before_discount
+    - target_id
+    - total_discount
+    type: object
   reqmodel.UpdateDiscount:
     properties:
       end_date:
@@ -923,6 +955,297 @@ paths:
       summary: Update Post
       tags:
       - Post
+  /ndi/product-discount-applied:
+    get:
+      description: Get all product discount applied
+      parameters:
+      - description: Search keyword
+        in: query
+        name: search
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product discount applied retrieved successfully
+          schema:
+            $ref: '#/definitions/resmodel.DatasResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Product discount applied not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: List Product Discount Applied
+      tags:
+      - Product Discount Applied
+    post:
+      consumes:
+      - application/json
+      description: Create a new product discount applied
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Create product discount applied
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reqmodel.CreateProductDiscountApplied'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Product discount applied created
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Product Discount Applied
+      tags:
+      - Product Discount Applied
+  /ndi/product-discount-applied/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product discount applied
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Product Discount Applied ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product discount applied deleted
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Product Discount Applied
+      tags:
+      - Product Discount Applied
+  /ndi/product-discount-applied/by-discount/{id}:
+    get:
+      description: Get a list of product discount applied by its discount ID
+      parameters:
+      - description: Product Discount ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product discount applied retrieved successfully
+          schema:
+            $ref: '#/definitions/resmodel.DatasResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Product discount applied not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: List Product Discount Applied By Discount ID
+      tags:
+      - Product Discount Applied
+  /ndi/transaction-discount-applied:
+    get:
+      description: Get all transaction discount applied
+      parameters:
+      - description: Search keyword
+        in: query
+        name: search
+        type: string
+      - description: Page Number
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product discount applied retrieved successfully
+          schema:
+            $ref: '#/definitions/resmodel.DatasResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Product discount applied not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: List Transaction Discount Applied
+      tags:
+      - Transaction Discount Applied
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction discount applied
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Create transaction discount applied
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reqmodel.CreateTransactionDiscountApplied'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Transaction discount applied created
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Transaction Discount Applied
+      tags:
+      - Transaction Discount Applied
+  /ndi/transaction-discount-applied/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a transaction discount applied
+      parameters:
+      - description: User ID to check
+        in: header
+        name: X-Auth-User-Id
+        required: true
+        type: string
+      - description: Transaction Discount Applied ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Transaction discount applied deleted
+          schema:
+            $ref: '#/definitions/resmodel.NoDataResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Transaction Discount Applied
+      tags:
+      - Transaction Discount Applied
+  /ndi/transaction-discount-applied/by-target/{id}:
+    get:
+      description: Get a list of transaction discount applied by its discount target
+        ID
+      parameters:
+      - description: Transaction Discount Target ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Transaction discount applied retrieved successfully
+          schema:
+            $ref: '#/definitions/resmodel.DatasResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "404":
+          description: Transaction discount applied not found
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/utils.RequestError'
+      security:
+      - ApiKeyAuth: []
+      summary: List Transaction Discount Applied By Discount Target ID
+      tags:
+      - Transaction Discount Applied
 securityDefinitions:
   ApiKeyAuth:
     in: header

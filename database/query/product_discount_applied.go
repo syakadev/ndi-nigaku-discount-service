@@ -77,6 +77,7 @@ func CountListProductDiscountAppliedByProductDiscountID() string {
 			deleted_at IS NULL;
 	`
 }
+
 // CreateDiscount inserts a new discount record
 func CreateProductDiscountApplied() string {
 	return `
