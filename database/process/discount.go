@@ -38,7 +38,6 @@ func ListDiscount(ctx context.Context, exec DBExecutor, request reqmodel.ListReq
 			&discount.Value,
 			&discount.StartDate,
 			&discount.EndDate,
-			&discount.Target,
 			&discount.IsActive,
 			&discount.CreatedAt,
 			&discount.CreatedBy,

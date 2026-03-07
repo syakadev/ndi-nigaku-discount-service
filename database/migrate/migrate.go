@@ -25,7 +25,6 @@ func CreateDiscountTableMigration() string {
 		value DECIMAL(15, 2) NOT NULL, -- percentage 10 for 10% or nominal 5000 for $5,000
 		start_date TIMESTAMPTZ NOT NULL,
 		end_date TIMESTAMPTZ NOT NULL,
-		target VARCHAR(50) NOT NULL, -- 'product' or 'transaction'
 		is_active BOOLEAN DEFAULT TRUE,
 		created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 		created_by UUID,

@@ -1637,7 +1637,6 @@ const docTemplate = `{
                 "end_date",
                 "name",
                 "start_date",
-                "target",
                 "type",
                 "value"
             ],
@@ -1649,9 +1648,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "start_date": {
-                    "type": "string"
-                },
-                "target": {
                     "type": "string"
                 },
                 "type": {
@@ -1794,9 +1790,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "start_date": {
-                    "type": "string"
-                },
-                "target": {
                     "type": "string"
                 },
                 "type": {

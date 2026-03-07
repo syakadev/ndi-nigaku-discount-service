@@ -8,7 +8,6 @@ type CreateDiscount struct {
 	Value      float64   `json:"value" validate:"required"`
 	StartDate  time.Time `json:"start_date" validate:"required"`
 	EndDate    time.Time `json:"end_date" validate:"required"`
-	Target     string    `json:"target" validate:"required"`
 	AuthUserID string    `json:"auth_user_id" validate:"required" swaggerignore:"true"`
 }
 
@@ -19,7 +18,6 @@ type UpdateDiscount struct {
 	Value      float64   `json:"value"`
 	StartDate  time.Time `json:"start_date"`
 	EndDate    time.Time `json:"end_date"`
-	Target     string    `json:"target"`
 	IsActive   bool      `json:"is_active"`
 	AuthUserID string    `json:"auth_user_id" validate:"required" swaggerignore:"true"`
 }
