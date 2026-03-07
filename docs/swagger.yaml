@@ -7,6 +7,8 @@ definitions:
         type: string
       start_date:
         type: string
+      target:
+        type: string
       type:
         type: string
       value:
@@ -15,6 +17,7 @@ definitions:
     - end_date
     - name
     - start_date
+    - target
     - type
     - value
     type: object
@@ -108,6 +111,8 @@ definitions:
       name:
         type: string
       start_date:
+        type: string
+      target:
         type: string
       type:
         type: string

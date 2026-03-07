@@ -10,6 +10,7 @@ func ListDiscount() string {
 			value,
 			start_date,
 			end_date,
+			target,
 			is_active,
 			created_at,
 			created_by,
@@ -24,6 +25,7 @@ func ListDiscount() string {
 			value::text = $1 OR
 			start_date::text = $1 OR
 			end_date::text = $1 OR
+			target ILIKE '%' || $1 || '%' OR
 			is_active::text = $1
 		) AND
 			deleted_at IS NULL
@@ -45,6 +47,7 @@ func CountListDiscount() string {
 			value::text = $1 OR
 			start_date::text = $1 OR
 			end_date::text = $1 OR
+			target ILIKE '%' || $1 || '%' OR
 			is_active::text = $1
 		) AND
 			deleted_at IS NULL;
@@ -61,6 +64,7 @@ func GetDiscountByID() string {
 			value,
 			start_date,
 			end_date,
+			target,
 			is_active,
 			created_at,
 			created_by,
@@ -82,6 +86,7 @@ func CreateDiscount() string {
 			value,
 			start_date,
 			end_date,
+			target,
 			created_by,
 			updated_by
 		) VALUES (
@@ -90,8 +95,9 @@ func CreateDiscount() string {
 			$3,  -- value
 			$4,  -- start_date
 			$5,  -- end_date
-			$6,  -- created_by
-			$6   -- updated_by
+			$6,  -- target
+			$7,  -- created_by
+			$7   -- updated_by
 		);
 	`
 }
@@ -107,9 +113,10 @@ func UpdateDiscount() string {
 			value = $4,
 			start_date = $5,
 			end_date = $6,
-			is_active = $7,
+			target = COALESCE(NULLIF($7, ''), target),
+			is_active = $8,
 			updated_at = NOW(),
-			updated_by = $8
+			updated_by = $9
 		WHERE
 			id = $1 AND deleted_at IS NULL;
 	`
@@ -119,8 +126,8 @@ func UpdateDiscount() string {
 func DeleteDiscount() string {
 	return `
 		UPDATE
-			public.ndi_discount 
-		SET 
+			public.ndi_discount
+		SET
 			deleted_at = NOW(),
 			deleted_by = $2
 		WHERE
