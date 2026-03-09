@@ -120,6 +120,31 @@ func ListTransactionDiscountAppliedByDiscountID(ctx context.Context, exec DBExec
 }
 
 func CreateTransactionDiscountApplied(ctx context.Context, exec DBExecutor, request reqmodel.CreateTransactionDiscountApplied) error {
+	var total int
+	errCount := exec.QueryRow(ctx, dbquery.CountListTransactionDiscountAppliedByDiscountID(), request.DiscountTransactionTargetID).Scan(&total)
+	if errCount != nil {
+		return errCount
+	}
+	// Get Max Total Quota from Discount Transaction Target
+	discountTarget, errGetTarget := GetDiscountTransactionTargetByID(ctx, exec, request.DiscountTransactionTargetID)
+	if errGetTarget != nil {
+		return errGetTarget
+	}
+
+	if !discountTarget.IsActive {
+		return utils.RequestError{
+			StatusCode: 400,
+			Message:    "Diskon sudah tidak aktif",
+		}
+	}
+
+	if total >= discountTarget.MaxTotalQuota {
+		return utils.RequestError{
+			StatusCode: 400,
+			Message:    "Discount Habis",
+		}
+	}
+
 	// Query
 	_, err := exec.Exec(ctx, dbquery.CreateTransactionDiscountApplied(),
 		request.DiscountTransactionTargetID,

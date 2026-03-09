@@ -88,6 +88,22 @@ func (c *DiscountProductTargetController) CreateDiscountProductTarget(ctx contex
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
 
+	// periksa apakah akun tersebut ada
+	_, errGetAccountName := utils.FetchProductName(request.TargetID)
+	if errGetAccountName != nil {
+		if errors.Is(errGetAccountName, pgx.ErrNoRows) {
+			return utils.StandardError{
+				Code:    http.StatusNotFound,
+				Message: "Data product tidak ditemukan",
+			}
+		}
+		c.log.Error("gagal mengambil product:", errGetAccountName)
+		return utils.StandardError{
+			Code:    http.StatusBadGateway,
+			Message: "Gagal mengambil product " + errGetAccountName.Error(),
+		}
+	}
+
 	// Create
 	err := dbprocess.CreateDiscountProductTarget(reqCtx, c.pgxConn, request)
 	if err != nil {

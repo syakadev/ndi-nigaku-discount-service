@@ -87,6 +87,15 @@ func GetDiscountTransactionTargetByID(ctx context.Context, exec DBExecutor, disc
 }
 
 func CreateDiscountTransactionTarget(ctx context.Context, exec DBExecutor, request reqmodel.CreateDiscountTransactionTarget) error {
+	// Check if discount exists
+	_, errDiscount := GetDiscountByID(ctx, exec, request.DiscountID)
+	if errDiscount != nil {
+		return utils.RequestError{
+			StatusCode: 404,
+			Message:    "Data diskon tidak ditemukan",
+		}
+	}
+
 	// Query
 	_, err := exec.Exec(ctx, dbquery.CreateDiscountTransactionTarget(),
 		request.DiscountID,

@@ -28,10 +28,10 @@ func NewDiscountHandler(
 
 	rStrict := r.Group("discount")
 	rStrict.Get("/", handler.ListDiscount)
-	rStrict.Get("/:id", handler.GetDiscountByID)
+	rStrict.Get("/:id_unik", handler.GetDiscountByID)
 	rStrict.Post("/", handler.CreateDiscount)
-	rStrict.Put("/:id", handler.UpdateDiscount)
-	rStrict.Delete("/:id", handler.DeleteDiscount)
+	rStrict.Put("/:id_unik", handler.UpdateDiscount)
+	rStrict.Delete("/:id_unik", handler.DeleteDiscount)
 }
 
 // ListDiscount
@@ -98,16 +98,16 @@ func (h *DiscountHandler) ListDiscount(c *fiber.Ctx) error {
 //	@Description	Get a discount by its ID
 //	@Tags			Discount
 //	@Produce		json
-//	@Param			id	path		string					true	"Discount ID"
+//	@Param			id_unik	path		string					true	"Discount ID"
 //	@Success		200	{object}	resmodel.DataResponse	"Discount retrieved successfully"
 //	@Failure		400	{object}	utils.RequestError		"Bad request"
 //	@Failure		404	{object}	utils.RequestError		"Discount not found"
 //	@Failure		500	{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/discount/{id} [get]
+//	@Router			/ndi/discount/{id_unik} [get]
 func (h *DiscountHandler) GetDiscountByID(c *fiber.Ctx) error {
 	// Parse
-	discountID := c.Params("id")
+	discountID := c.Params("id_unik")
 
 	// Call Controller
 	data, err := h.Controller.GetDiscountByID(c.Context(), discountID)
@@ -206,13 +206,13 @@ func (h *DiscountHandler) CreateDiscount(c *fiber.Ctx) error {
 //	@Produce		json
 //	@Accept			json
 //	@Param			X-Auth-User-Id	header		string					true	"User ID to check"
-//	@Param			id				path		string					true	"Discount ID"
+//	@Param			id_unik			path		string					true	"Discount ID"
 //	@Param			request			body		reqmodel.UpdateDiscount	true	"Update discount"
 //	@Success		200				{object}	resmodel.NoDataResponse	"Discount updated"
 //	@Failure		400				{object}	utils.RequestError		"Bad request"
 //	@Failure		500				{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/discount/{id} [put]
+//	@Router			/ndi/discount/{id_unik} [put]
 func (h *DiscountHandler) UpdateDiscount(c *fiber.Ctx) error {
 	// Get Header
 	authUserID := c.Get("X-Auth-User-Id")
@@ -224,7 +224,7 @@ func (h *DiscountHandler) UpdateDiscount(c *fiber.Ctx) error {
 	}
 
 	// Parse
-	discountID := c.Params("id")
+	discountID := c.Params("id_unik")
 	var request reqmodel.UpdateDiscount
 	request.ID = discountID
 	request.AuthUserID = authUserID
@@ -274,12 +274,12 @@ func (h *DiscountHandler) UpdateDiscount(c *fiber.Ctx) error {
 //	@Produce		json
 //	@Accept			json
 //	@Param			X-Auth-User-Id	header		string					true	"User ID to check"
-//	@Param			id				path		string					true	"Discount ID"
+//	@Param			id_unik			path		string					true	"Discount ID"
 //	@Success		200				{object}	resmodel.NoDataResponse	"Discount deleted"
 //	@Failure		400				{object}	utils.RequestError		"Bad request"
 //	@Failure		500				{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/discount/{id} [delete]
+//	@Router			/ndi/discount/{id_unik} [delete]
 func (h *DiscountHandler) DeleteDiscount(c *fiber.Ctx) error {
 	// Get Header
 	authUserID := c.Get("X-Auth-User-Id")
@@ -291,7 +291,7 @@ func (h *DiscountHandler) DeleteDiscount(c *fiber.Ctx) error {
 	}
 
 	// Parse
-	discountID := c.Params("id")
+	discountID := c.Params("id_unik")
 
 	// Call Controller
 	err := h.Controller.DeleteDiscount(c.Context(), discountID, authUserID)

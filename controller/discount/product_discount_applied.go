@@ -89,14 +89,33 @@ func (c *ProductDiscountAppliedController) ListProductDiscountAppliedByProductDi
 	return appliedDiscounts, pagination, nil
 }
 
-func (c *ProductDiscountAppliedController) CreateProductDiscountApplied(ctx context.Context, request reqmodel.CreateProductDiscountApplied) error {
+func (c *ProductDiscountAppliedController) CreateProductDiscountApplied(ctx context.Context, requests []reqmodel.CreateProductDiscountApplied) error {
 	// Context Timeout
 	reqCtx, cancel := context.WithTimeout(ctx, c.contextTimeout)
 	defer cancel()
 
+	// Validasi nama customer untuk setiap request
+	for i := range requests {
+		customerName, err := utils.FetchCustomerName(requests[i].CustomerID)
+		if err != nil {
+			c.log.Error("gagal mengambil data customer:", err)
+			return utils.StandardError{
+				Code:    http.StatusBadGateway,
+				Message: "Gagal memvalidasi data customer: " + err.Error(),
+			}
+		}
+		requests[i].CustomerName = customerName
+	}
+
 	// Create
-	err := dbprocess.CreateProductDiscountApplied(reqCtx, c.pgxConn, request)
+	err := dbprocess.CreateProductDiscountApplied(reqCtx, c.pgxConn, requests)
 	if err != nil {
+		if reqErr, ok := err.(utils.RequestError); ok {
+			return utils.StandardError{
+				Code:    reqErr.StatusCode,
+				Message: reqErr.Message,
+			}
+		}
 		c.log.Error("gagal memproses diskon produk yang diterapkan:", err)
 		return utils.StandardError{
 			Code:    http.StatusInternalServerError,

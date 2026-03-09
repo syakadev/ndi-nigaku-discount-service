@@ -148,7 +148,7 @@ func (h *ProductDiscountAppliedHandler) ListProductDiscountAppliedByDiscountID(c
 //	@Produce		json
 //	@Accept			json
 //	@Param			X-Auth-User-Id	header		string									true	"User ID to check"
-//	@Param			request			body		reqmodel.CreateProductDiscountApplied	true	"Create product discount applied"
+//	@Param			request			body		[]reqmodel.CreateProductDiscountApplied	true	"Create product discount applied"
 //	@Success		201				{object}	resmodel.NoDataResponse					"Product discount applied created"
 //	@Failure		400				{object}	utils.RequestError						"Bad request"
 //	@Failure		500				{object}	utils.RequestError						"Server error"
@@ -165,25 +165,28 @@ func (h *ProductDiscountAppliedHandler) CreateProductDiscountApplied(c *fiber.Ct
 	}
 
 	// Parse
-	var request reqmodel.CreateProductDiscountApplied
-	request.AuthUserID = authUserID
-	if err := c.BodyParser(&request); err != nil {
+	var requests []reqmodel.CreateProductDiscountApplied
+	if err := c.BodyParser(&requests); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.GeneralErrorResponse(
 			fiber.StatusBadRequest,
 			errors.New("format JSON tidak valid"),
 		))
 	}
 
-	// Validate Input
-	if err := h.Validate.Struct(request); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(utils.GeneralErrorResponse(
-			fiber.StatusBadRequest,
-			errors.New("validasi gagal: "+err.Error()),
-		))
+	// Set AuthUserID and Validate
+	for i := range requests {
+		requests[i].AuthUserID = authUserID
+		// Validate Input
+		if err := h.Validate.Struct(requests[i]); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(utils.GeneralErrorResponse(
+				fiber.StatusBadRequest,
+				errors.New("validasi gagal: "+err.Error()),
+			))
+		}
 	}
 
 	// Call Controller
-	err := h.Controller.CreateProductDiscountApplied(c.Context(), request)
+	err := h.Controller.CreateProductDiscountApplied(c.Context(), requests)
 	if err != nil {
 		if reqErr, ok := err.(utils.RequestError); ok {
 			return c.Status(reqErr.StatusCode).JSON(reqErr)

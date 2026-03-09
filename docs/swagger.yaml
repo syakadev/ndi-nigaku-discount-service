@@ -1010,7 +1010,9 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/reqmodel.CreateProductDiscountApplied'
+          items:
+            $ref: '#/definitions/reqmodel.CreateProductDiscountApplied'
+          type: array
       produces:
       - application/json
       responses:

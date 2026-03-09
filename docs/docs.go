@@ -1268,7 +1268,10 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/reqmodel.CreateProductDiscountApplied"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/reqmodel.CreateProductDiscountApplied"
+                            }
                         }
                     }
                 ],

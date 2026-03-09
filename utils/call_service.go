@@ -88,3 +88,59 @@ func SendTextWAMessage(phoneNo, message string) (bool, error) {
 
 	return true, nil
 }
+
+func FetchProductName(id string) (string, error) {
+	url := fmt.Sprintf(os.Getenv("URL_INVENTORY")+"/product/name/%s", id)
+
+	req := fasthttp.AcquireRequest()
+	resp := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseRequest(req)
+	defer fasthttp.ReleaseResponse(resp)
+
+	req.SetRequestURI(url)
+	req.Header.SetMethod("GET")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("SECRET_KEY"))
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &fasthttp.Client{}
+	err := client.DoTimeout(req, resp, 5*time.Second)
+	if err != nil || resp.StatusCode() != fasthttp.StatusOK {
+		return "", fmt.Errorf("gagal request: %v", err)
+	}
+
+	var data servicemodel.FetchName
+	if err := json.Unmarshal(resp.Body(), &data); err != nil {
+		return "", err
+	}
+
+	return data.Name, nil
+}
+
+func FetchCustomerName(id string) (string, error) {
+	url := fmt.Sprintf(os.Getenv("URL_TRANSACTION")+"/customer/%s", id)
+
+	req := fasthttp.AcquireRequest()
+	resp := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseRequest(req)
+	defer fasthttp.ReleaseResponse(resp)
+
+	req.SetRequestURI(url)
+	req.Header.SetMethod("GET")
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("SECRET_KEY"))
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &fasthttp.Client{}
+	err := client.DoTimeout(req, resp, 5*time.Second)
+	if err != nil || resp.StatusCode() != fasthttp.StatusOK {
+		return "", fmt.Errorf("gagal request: %v", err)
+	}
+
+	var data servicemodel.FetchName
+	if err := json.Unmarshal(resp.Body(), &data); err != nil {
+		return "", err
+	}
+
+	return data.Name, nil
+}

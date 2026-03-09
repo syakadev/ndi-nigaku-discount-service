@@ -118,17 +118,43 @@ func ListProductDiscountAppliedByProductDiscountID(ctx context.Context, exec DBE
 	return productDiscountApplieds, pagination, nil
 }
 
-func CreateProductDiscountApplied(ctx context.Context, exec DBExecutor, request reqmodel.CreateProductDiscountApplied) error {
-	// Query
-	_, err := exec.Exec(ctx, dbquery.CreateProductDiscountApplied(),
-		request.DiscountProductTargetID,
-		request.CustomerID,
-		request.CustomerName,
-		request.TransactionDate,
-		request.AuthUserID,
-	)
-	if err != nil {
-		return err
+func CreateProductDiscountApplied(ctx context.Context, exec DBExecutor, requests []reqmodel.CreateProductDiscountApplied) error {
+	for _, request := range requests {
+		var total int
+		errCount := exec.QueryRow(ctx, dbquery.CountListProductDiscountAppliedByProductDiscountID(), request.DiscountProductTargetID).Scan(&total)
+		if errCount != nil {
+			return errCount
+		}
+		// Get Max Total Quota from Discount Transaction Target
+		discountTarget, errGetTarget := GetDiscountProductTargetByID(ctx, exec, request.DiscountProductTargetID)
+		if errGetTarget != nil {
+			return errGetTarget
+		}
+
+		if !discountTarget.IsActive {
+			return utils.RequestError{
+				StatusCode: 400,
+				Message:    "Diskon sudah tidak aktif",
+			}
+		}
+
+		if total >= discountTarget.MaxTotalQuota {
+			return utils.RequestError{
+				StatusCode: 400,
+				Message:    "Discount Habis",
+			}
+		}
+		// Query
+		_, err := exec.Exec(ctx, dbquery.CreateProductDiscountApplied(),
+			request.DiscountProductTargetID,
+			request.CustomerID,
+			request.CustomerName,
+			request.TransactionDate,
+			request.AuthUserID,
+		)
+		if err != nil {
+			return err
+		}
 	}
 
 	// Return Success
