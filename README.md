@@ -1,1 +1,1 @@
-# template-auth-service
+# ndi_nigaku_discount
