@@ -99,10 +99,10 @@ func (h *DiscountHandler) ListDiscount(c *fiber.Ctx) error {
 //	@Tags			Discount
 //	@Produce		json
 //	@Param			id_unik	path		string					true	"Discount ID"
-//	@Success		200	{object}	resmodel.DataResponse	"Discount retrieved successfully"
-//	@Failure		400	{object}	utils.RequestError		"Bad request"
-//	@Failure		404	{object}	utils.RequestError		"Discount not found"
-//	@Failure		500	{object}	utils.RequestError		"Server error"
+//	@Success		200		{object}	resmodel.DataResponse	"Discount retrieved successfully"
+//	@Failure		400		{object}	utils.RequestError		"Bad request"
+//	@Failure		404		{object}	utils.RequestError		"Discount not found"
+//	@Failure		500		{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
 //	@Router			/ndi/discount/{id_unik} [get]
 func (h *DiscountHandler) GetDiscountByID(c *fiber.Ctx) error {

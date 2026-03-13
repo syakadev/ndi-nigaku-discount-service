@@ -82,9 +82,9 @@ func dbConnection() {
 
 }
 
-// @title						Template Service Auth
+// @title						Service Discount
 // @version					1.0
-// @description				Template Service Auth Rest API.
+// @description				Service Discount Rest API
 // @termsOfService				http://swagger.io/terms/
 // @contact.name				API Support
 // @contact.email				lifelinejar@mail.com

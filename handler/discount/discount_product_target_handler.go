@@ -28,10 +28,10 @@ func NewDiscountProductTargetHandler(
 
 	rStrict := r.Group("discount-product")
 	rStrict.Get("/", handler.ListDiscountProductTarget)
-	rStrict.Get("/:id", handler.GetDiscountProductTargetByID)
+	rStrict.Get("/:id_unik", handler.GetDiscountProductTargetByID)
 	rStrict.Post("/", handler.CreateDiscountProductTarget)
-	rStrict.Put("/:id", handler.UpdateDiscountProductTarget)
-	rStrict.Delete("/:id", handler.DeleteDiscountProductTarget)
+	rStrict.Put("/:id_unik", handler.UpdateDiscountProductTarget)
+	rStrict.Delete("/:id_unik", handler.DeleteDiscountProductTarget)
 }
 
 // ListDiscountProductTarget
@@ -98,16 +98,16 @@ func (h *DiscountProductTargetHandler) ListDiscountProductTarget(c *fiber.Ctx) e
 //	@Description	Get a discount product target by its ID
 //	@Tags			Discount Product Target
 //	@Produce		json
-//	@Param			id	path		string					true	"Discount Product Target ID"
-//	@Success		200	{object}	resmodel.DataResponse	"Discount product target retrieved successfully"
-//	@Failure		400	{object}	utils.RequestError		"Bad request"
-//	@Failure		404	{object}	utils.RequestError		"Discount product target not found"
-//	@Failure		500	{object}	utils.RequestError		"Server error"
+//	@Param			id_unik	path		string					true	"Discount Product Target ID"
+//	@Success		200		{object}	resmodel.DataResponse	"Discount product target retrieved successfully"
+//	@Failure		400		{object}	utils.RequestError		"Bad request"
+//	@Failure		404		{object}	utils.RequestError		"Discount product target not found"
+//	@Failure		500		{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/discount-product/{id} [get]
+//	@Router			/ndi/discount-product/{id_unik} [get]
 func (h *DiscountProductTargetHandler) GetDiscountProductTargetByID(c *fiber.Ctx) error {
 	// Parse
-	productID := c.Params("id")
+	productID := c.Params("id_unik")
 
 	// Call Controller
 	data, err := h.Controller.GetDiscountProductTargetByID(c.Context(), productID)
@@ -206,13 +206,13 @@ func (h *DiscountProductTargetHandler) CreateDiscountProductTarget(c *fiber.Ctx)
 //	@Produce		json
 //	@Accept			json
 //	@Param			X-Auth-User-Id	header		string									true	"User ID to check"
-//	@Param			id				path		string									true	"Discount Product Target ID"
+//	@Param			id_unik			path		string									true	"Discount Product Target ID"
 //	@Param			request			body		reqmodel.UpdateDiscountProductTarget	true	"Update discount product target"
 //	@Success		200				{object}	resmodel.NoDataResponse					"Discount product target updated"
 //	@Failure		400				{object}	utils.RequestError						"Bad request"
 //	@Failure		500				{object}	utils.RequestError						"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/discount-product/{id} [put]
+//	@Router			/ndi/discount-product/{id_unik} [put]
 func (h *DiscountProductTargetHandler) UpdateDiscountProductTarget(c *fiber.Ctx) error {
 	// Get Header
 	authUserID := c.Get("X-Auth-User-Id")
@@ -224,7 +224,7 @@ func (h *DiscountProductTargetHandler) UpdateDiscountProductTarget(c *fiber.Ctx)
 	}
 
 	// Parse
-	productID := c.Params("id")
+	productID := c.Params("id_unik")
 	var request reqmodel.UpdateDiscountProductTarget
 	request.ID = productID
 	request.AuthUserID = authUserID
@@ -274,12 +274,12 @@ func (h *DiscountProductTargetHandler) UpdateDiscountProductTarget(c *fiber.Ctx)
 //	@Produce		json
 //	@Accept			json
 //	@Param			X-Auth-User-Id	header		string					true	"User ID to check"
-//	@Param			id				path		string					true	"Discount Product Target ID"
+//	@Param			id_unik			path		string					true	"Discount Product Target ID"
 //	@Success		200				{object}	resmodel.NoDataResponse	"Discount product target deleted"
 //	@Failure		400				{object}	utils.RequestError		"Bad request"
 //	@Failure		500				{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/discount-product/{id} [delete]
+//	@Router			/ndi/discount-product/{id_unik} [delete]
 func (h *DiscountProductTargetHandler) DeleteDiscountProductTarget(c *fiber.Ctx) error {
 	// Get Header
 	authUserID := c.Get("X-Auth-User-Id")
@@ -291,7 +291,7 @@ func (h *DiscountProductTargetHandler) DeleteDiscountProductTarget(c *fiber.Ctx)
 	}
 
 	// Parse
-	productID := c.Params("id")
+	productID := c.Params("id_unik")
 
 	// Call Controller
 	err := h.Controller.DeleteDiscountProductTarget(c.Context(), productID, authUserID)

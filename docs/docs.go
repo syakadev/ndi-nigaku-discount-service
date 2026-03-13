@@ -261,7 +261,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/discount-product/{id}": {
+        "/ndi/discount-product/{id_unik}": {
             "get": {
                 "security": [
                     {
@@ -280,7 +280,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount Product Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -340,7 +340,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount Product Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     },
@@ -403,7 +403,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount Product Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -549,7 +549,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/discount-transaction/{id}": {
+        "/ndi/discount-transaction/{id_unik}": {
             "get": {
                 "security": [
                     {
@@ -568,7 +568,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount Transaction Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -628,7 +628,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount Transaction Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     },
@@ -691,7 +691,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount Transaction Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -718,7 +718,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/discount/{id}": {
+        "/ndi/discount/{id_unik}": {
             "get": {
                 "security": [
                     {
@@ -737,7 +737,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -797,7 +797,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     },
@@ -860,7 +860,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Discount ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -868,294 +868,6 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "Discount deleted",
-                        "schema": {
-                            "$ref": "#/definitions/resmodel.NoDataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    }
-                }
-            }
-        },
-        "/ndi/post": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Mendapatkan seluruh post",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "List Post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Search keyword",
-                        "name": "search",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page Number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Page Size",
-                        "name": "size",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Post berhasil diambil",
-                        "schema": {
-                            "$ref": "#/definitions/resmodel.DatasResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "404": {
-                        "description": "Post not found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Membuat post baru",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "Create Post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID to check",
-                        "name": "X-Auth-User-Id",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Create post",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/reqmodel.CreatePost"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Post Created",
-                        "schema": {
-                            "$ref": "#/definitions/resmodel.NoDataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    }
-                }
-            }
-        },
-        "/ndi/post/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Mendapatkan post berdasarkan ID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "Get Post By ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Post ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Post berhasil diambil",
-                        "schema": {
-                            "$ref": "#/definitions/resmodel.DataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "404": {
-                        "description": "Post not found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Membuat post baru",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "Update Post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID to check",
-                        "name": "X-Auth-User-Id",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Post ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Update post",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/reqmodel.UpdatePost"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Post Updated",
-                        "schema": {
-                            "$ref": "#/definitions/resmodel.NoDataResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    },
-                    "500": {
-                        "description": "Server error",
-                        "schema": {
-                            "$ref": "#/definitions/utils.RequestError"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Menghapus post",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Post"
-                ],
-                "summary": "Delete Post",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID to check",
-                        "name": "X-Auth-User-Id",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Post ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Post Deleted",
                         "schema": {
                             "$ref": "#/definitions/resmodel.NoDataResponse"
                         }
@@ -1297,7 +1009,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/product-discount-applied/by-discount/{id}": {
+        "/ndi/product-discount-applied/by-discount/{id_unik}": {
             "get": {
                 "security": [
                     {
@@ -1316,7 +1028,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Product Discount ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -1349,7 +1061,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/product-discount-applied/{id}": {
+        "/ndi/product-discount-applied/{id_unik}": {
             "delete": {
                 "security": [
                     {
@@ -1378,7 +1090,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Product Discount Applied ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -1524,7 +1236,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/transaction-discount-applied/by-target/{id}": {
+        "/ndi/transaction-discount-applied/by-target/{id_unik}": {
             "get": {
                 "security": [
                     {
@@ -1543,7 +1255,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Transaction Discount Target ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -1576,7 +1288,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/ndi/transaction-discount-applied/{id}": {
+        "/ndi/transaction-discount-applied/{id_unik}": {
             "delete": {
                 "security": [
                     {
@@ -1605,7 +1317,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Transaction Discount Applied ID",
-                        "name": "id",
+                        "name": "id_unik",
                         "in": "path",
                         "required": true
                     }
@@ -1711,25 +1423,6 @@ const docTemplate = `{
                 },
                 "max_total_quota": {
                     "type": "integer"
-                }
-            }
-        },
-        "reqmodel.CreatePost": {
-            "type": "object",
-            "required": [
-                "content",
-                "is_active",
-                "title"
-            ],
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
                 }
             }
         },
@@ -1851,20 +1544,6 @@ const docTemplate = `{
                 }
             }
         },
-        "reqmodel.UpdatePost": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "resmodel.DataResponse": {
             "type": "object",
             "properties": {
@@ -1952,8 +1631,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Template Service Auth",
-	Description:      "Template Service Auth Rest API.",
+	Title:            "Service Discount",
+	Description:      "Service Discount Rest API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

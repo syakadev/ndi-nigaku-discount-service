@@ -28,9 +28,9 @@ func NewTransactionDiscountAppliedHandler(
 
 	rStrict := r.Group("transaction-discount-applied")
 	rStrict.Get("/", handler.ListTransactionDiscountApplied)
-	rStrict.Get("/by-target/:id", handler.ListTransactionDiscountAppliedByTargetID)
+	rStrict.Get("/by-target/:id_unik", handler.ListTransactionDiscountAppliedByTargetID)
 	rStrict.Post("/", handler.CreateTransactionDiscountApplied)
-	rStrict.Delete("/:id", handler.DeleteTransactionDiscountApplied)
+	rStrict.Delete("/:id_unik", handler.DeleteTransactionDiscountApplied)
 }
 
 // ListTransactionDiscountApplied
@@ -97,16 +97,16 @@ func (h *TransactionDiscountAppliedHandler) ListTransactionDiscountApplied(c *fi
 //	@Description	Get a list of transaction discount applied by its discount target ID
 //	@Tags			Transaction Discount Applied
 //	@Produce		json
-//	@Param			id	path		string					true	"Transaction Discount Target ID"
-//	@Success		200	{object}	resmodel.DatasResponse	"Transaction discount applied retrieved successfully"
-//	@Failure		400	{object}	utils.RequestError		"Bad request"
-//	@Failure		404	{object}	utils.RequestError		"Transaction discount applied not found"
-//	@Failure		500	{object}	utils.RequestError		"Server error"
+//	@Param			id_unik	path		string					true	"Transaction Discount Target ID"
+//	@Success		200		{object}	resmodel.DatasResponse	"Transaction discount applied retrieved successfully"
+//	@Failure		400		{object}	utils.RequestError		"Bad request"
+//	@Failure		404		{object}	utils.RequestError		"Transaction discount applied not found"
+//	@Failure		500		{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/transaction-discount-applied/by-target/{id} [get]
+//	@Router			/ndi/transaction-discount-applied/by-target/{id_unik} [get]
 func (h *TransactionDiscountAppliedHandler) ListTransactionDiscountAppliedByTargetID(c *fiber.Ctx) error {
 	// Parse
-	transactionDiscountTargetID := c.Params("id")
+	transactionDiscountTargetID := c.Params("id_unik")
 	var request reqmodel.ListRequest
 	if err := c.QueryParser(&request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(utils.GeneralErrorResponse(
@@ -213,12 +213,12 @@ func (h *TransactionDiscountAppliedHandler) CreateTransactionDiscountApplied(c *
 //	@Produce		json
 //	@Accept			json
 //	@Param			X-Auth-User-Id	header		string					true	"User ID to check"
-//	@Param			id				path		string					true	"Transaction Discount Applied ID"
+//	@Param			id_unik			path		string					true	"Transaction Discount Applied ID"
 //	@Success		200				{object}	resmodel.NoDataResponse	"Transaction discount applied deleted"
 //	@Failure		400				{object}	utils.RequestError		"Bad request"
 //	@Failure		500				{object}	utils.RequestError		"Server error"
 //	@Security		ApiKeyAuth
-//	@Router			/ndi/transaction-discount-applied/{id} [delete]
+//	@Router			/ndi/transaction-discount-applied/{id_unik} [delete]
 func (h *TransactionDiscountAppliedHandler) DeleteTransactionDiscountApplied(c *fiber.Ctx) error {
 	// Get Header
 	authUserID := c.Get("X-Auth-User-Id")
@@ -230,7 +230,7 @@ func (h *TransactionDiscountAppliedHandler) DeleteTransactionDiscountApplied(c *
 	}
 
 	// Parse
-	transactionDiscountAppliedID := c.Params("id")
+	transactionDiscountAppliedID := c.Params("id_unik")
 
 	// Call Controller
 	err := h.Controller.DeleteTransactionDiscountApplied(c.Context(), transactionDiscountAppliedID, authUserID)

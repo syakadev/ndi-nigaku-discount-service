@@ -54,19 +54,6 @@ definitions:
     - is_active
     - max_total_quota
     type: object
-  reqmodel.CreatePost:
-    properties:
-      content:
-        type: string
-      is_active:
-        type: boolean
-      title:
-        type: string
-    required:
-    - content
-    - is_active
-    - title
-    type: object
   reqmodel.CreateProductDiscountApplied:
     properties:
       customer_id:
@@ -146,15 +133,6 @@ definitions:
       max_total_quota:
         type: integer
     type: object
-  reqmodel.UpdatePost:
-    properties:
-      content:
-        type: string
-      is_active:
-        type: boolean
-      title:
-        type: string
-    type: object
   resmodel.DataResponse:
     properties:
       data: {}
@@ -207,12 +185,12 @@ info:
   contact:
     email: lifelinejar@mail.com
     name: API Support
-  description: Template Service Auth Rest API.
+  description: Service Discount Rest API
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: Template Service Auth
+  title: Service Discount
   version: "1.0"
 paths:
   /ndi/discount:
@@ -367,7 +345,7 @@ paths:
       summary: Create Discount Product Target
       tags:
       - Discount Product Target
-  /ndi/discount-product/{id}:
+  /ndi/discount-product/{id_unik}:
     delete:
       consumes:
       - application/json
@@ -380,7 +358,7 @@ paths:
         type: string
       - description: Discount Product Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -408,7 +386,7 @@ paths:
       parameters:
       - description: Discount Product Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -447,7 +425,7 @@ paths:
         type: string
       - description: Discount Product Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       - description: Update discount product target
@@ -552,7 +530,7 @@ paths:
       summary: Create Discount Transaction Target
       tags:
       - Discount Transaction Target
-  /ndi/discount-transaction/{id}:
+  /ndi/discount-transaction/{id_unik}:
     delete:
       consumes:
       - application/json
@@ -565,7 +543,7 @@ paths:
         type: string
       - description: Discount Transaction Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -593,7 +571,7 @@ paths:
       parameters:
       - description: Discount Transaction Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -632,7 +610,7 @@ paths:
         type: string
       - description: Discount Transaction Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       - description: Update discount transaction target
@@ -661,7 +639,7 @@ paths:
       summary: Update Discount Transaction Target
       tags:
       - Discount Transaction Target
-  /ndi/discount/{id}:
+  /ndi/discount/{id_unik}:
     delete:
       consumes:
       - application/json
@@ -674,7 +652,7 @@ paths:
         type: string
       - description: Discount ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -702,7 +680,7 @@ paths:
       parameters:
       - description: Discount ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -741,7 +719,7 @@ paths:
         type: string
       - description: Discount ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       - description: Update discount
@@ -770,191 +748,6 @@ paths:
       summary: Update Discount
       tags:
       - Discount
-  /ndi/post:
-    get:
-      description: Mendapatkan seluruh post
-      parameters:
-      - description: Search keyword
-        in: query
-        name: search
-        type: string
-      - description: Page Number
-        in: query
-        name: page
-        type: integer
-      - description: Page Size
-        in: query
-        name: size
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Post berhasil diambil
-          schema:
-            $ref: '#/definitions/resmodel.DatasResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "404":
-          description: Post not found
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "500":
-          description: Server error
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-      security:
-      - ApiKeyAuth: []
-      summary: List Post
-      tags:
-      - Post
-    post:
-      consumes:
-      - application/json
-      description: Membuat post baru
-      parameters:
-      - description: User ID to check
-        in: header
-        name: X-Auth-User-Id
-        required: true
-        type: string
-      - description: Create post
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/reqmodel.CreatePost'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Post Created
-          schema:
-            $ref: '#/definitions/resmodel.NoDataResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "500":
-          description: Server error
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-      security:
-      - ApiKeyAuth: []
-      summary: Create Post
-      tags:
-      - Post
-  /ndi/post/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Menghapus post
-      parameters:
-      - description: User ID to check
-        in: header
-        name: X-Auth-User-Id
-        required: true
-        type: string
-      - description: Post ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Post Deleted
-          schema:
-            $ref: '#/definitions/resmodel.NoDataResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "500":
-          description: Server error
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-      security:
-      - ApiKeyAuth: []
-      summary: Delete Post
-      tags:
-      - Post
-    get:
-      description: Mendapatkan post berdasarkan ID
-      parameters:
-      - description: Post ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Post berhasil diambil
-          schema:
-            $ref: '#/definitions/resmodel.DataResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "404":
-          description: Post not found
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "500":
-          description: Server error
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-      security:
-      - ApiKeyAuth: []
-      summary: Get Post By ID
-      tags:
-      - Post
-    put:
-      consumes:
-      - application/json
-      description: Membuat post baru
-      parameters:
-      - description: User ID to check
-        in: header
-        name: X-Auth-User-Id
-        required: true
-        type: string
-      - description: Post ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Update post
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/reqmodel.UpdatePost'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Post Updated
-          schema:
-            $ref: '#/definitions/resmodel.NoDataResponse'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-        "500":
-          description: Server error
-          schema:
-            $ref: '#/definitions/utils.RequestError'
-      security:
-      - ApiKeyAuth: []
-      summary: Update Post
-      tags:
-      - Post
   /ndi/product-discount-applied:
     get:
       description: Get all product discount applied
@@ -1033,7 +826,7 @@ paths:
       summary: Create Product Discount Applied
       tags:
       - Product Discount Applied
-  /ndi/product-discount-applied/{id}:
+  /ndi/product-discount-applied/{id_unik}:
     delete:
       consumes:
       - application/json
@@ -1046,7 +839,7 @@ paths:
         type: string
       - description: Product Discount Applied ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -1069,13 +862,13 @@ paths:
       summary: Delete Product Discount Applied
       tags:
       - Product Discount Applied
-  /ndi/product-discount-applied/by-discount/{id}:
+  /ndi/product-discount-applied/by-discount/{id_unik}:
     get:
       description: Get a list of product discount applied by its discount ID
       parameters:
       - description: Product Discount ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -1178,7 +971,7 @@ paths:
       summary: Create Transaction Discount Applied
       tags:
       - Transaction Discount Applied
-  /ndi/transaction-discount-applied/{id}:
+  /ndi/transaction-discount-applied/{id_unik}:
     delete:
       consumes:
       - application/json
@@ -1191,7 +984,7 @@ paths:
         type: string
       - description: Transaction Discount Applied ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
@@ -1214,14 +1007,14 @@ paths:
       summary: Delete Transaction Discount Applied
       tags:
       - Transaction Discount Applied
-  /ndi/transaction-discount-applied/by-target/{id}:
+  /ndi/transaction-discount-applied/by-target/{id_unik}:
     get:
       description: Get a list of transaction discount applied by its discount target
         ID
       parameters:
       - description: Transaction Discount Target ID
         in: path
-        name: id
+        name: id_unik
         required: true
         type: string
       produces:
